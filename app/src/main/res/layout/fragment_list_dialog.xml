@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.codestrela.product.viewmodels.ListDialogViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+
+                <ProgressBar
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:bindVisibility="@{vm.progressShow}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="12dp"
+                    android:text="Loading..."
+                    android:textSize="24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:bindVisibility="@{vm.contactShow}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="Group name :"
+                    android:textColor="#353434"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="12dp"
+                    android:hint="Enter Group Name"
+                    android:textSize="18dp"
+                    app:binding="@{vm.groupName}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="Select members :"
+                    android:textColor="#353434"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    setRecyclerViewAdapter="@{vm.adapter}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:onClick="@{vm::onSubmitContact}"
+                        android:text="submit" />
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:onClick="@{vm::onCancelPressed}"
+                        android:text="cancel" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</layout>

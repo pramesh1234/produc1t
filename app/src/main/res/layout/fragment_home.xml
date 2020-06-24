@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.codestrela.product.viewmodels.HomeViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Home"
+                android:textColor="#fff"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="8dp"
+                android:layout_toLeftOf="@id/profile"
+                android:onClick="@{vm::onPublicClicked}"
+                android:src="@drawable/ic_baseline_public_24" />
+
+            <ImageView
+                android:id="@+id/profile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="8dp"
+                android:layout_toLeftOf="@id/addCom"
+                android:onClick="@{vm::onAccountClicked}"
+                android:src="@drawable/ic_account_circle_24dp" />
+
+            <ImageView
+                android:id="@+id/addCom"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="8dp"
+                android:onClick="@{vm::onBottomSheet}"
+                android:src="@drawable/ic_add_circle_outline_black_24dp" />
+        </RelativeLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/event_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            app:tabTextAppearance="@style/TabTextAppearance" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/event_view_pager"
+            setAdapter="@{vm.mViewPagerAdapter}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+    </LinearLayout>
+</layout>

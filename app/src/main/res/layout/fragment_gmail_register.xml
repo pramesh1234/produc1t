@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.codestrela.product.viewmodels.GmailRegisterViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/etPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:hint="Enter Number"
+            android:inputType="number"
+            app:binding="@{vm.phoneNo}" />
+
+        <Button
+            android:id="@+id/subBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etPhone"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:background="@color/colorPrimary"
+            android:onClick="@{vm::onSubmit}"
+            android:text="Submit"
+            android:textColor="@color/white_color" />
+    </RelativeLayout>
+</layout>
