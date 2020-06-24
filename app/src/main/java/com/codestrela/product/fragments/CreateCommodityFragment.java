@@ -91,11 +91,10 @@ public class CreateCommodityFragment extends Fragment {
                 switch (checkedId) {
                     case R.id.rentId:
                         vm.mode.set("rent");
-                        Toast.makeText(getContext(), "rent", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.saleId:
                         vm.mode.set("sale");
-                        Toast.makeText(getContext(), "sale", Toast.LENGTH_SHORT).show();
+                        break;
                 }
             }
         });
@@ -106,15 +105,12 @@ public class CreateCommodityFragment extends Fragment {
                 switch (checkedId) {
                     case R.id.publicRb:
                         vm.type.set("public");
-                        Toast.makeText(getContext(), "public", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.privateRb:
                         vm.type.set("private");
-                        Toast.makeText(getContext(), "private", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.groupRb:
                         vm.type.set("group");
-                        Toast.makeText(getContext(), "group", Toast.LENGTH_SHORT).show();
                 }
             }
         });

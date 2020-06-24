@@ -46,7 +46,13 @@ public class RowContactViewModel {
 
 
     public void onJoinClicked(View view) {
-        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", "+91" + contactNumber.get()).get()
+        String contact;
+        if (contactNumber.get().length() == 10) {
+            contact = "+91" + contactNumber.get();
+        } else {
+            contact = contactNumber.get();
+        }
+        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", contact).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

@@ -102,42 +102,48 @@ public class HomeFragment extends Fragment {
             Cursor cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                     null, null, null, null);
             while (cursor.moveToNext()) {
+                String lastNumber = "";
                 final String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 final String mobile = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 // Toast.makeText(getActivity(), "name: " + name, Toast.LENGTH_SHORT).show();
                 String number;
-                if (mobile.length() == 10) {
-                    number = "+91" + mobile;
+                if (lastNumber.equals(mobile)) {
+
                 } else {
-                    number = mobile;
-                }
+                    lastNumber = mobile;
+                    if (mobile.length() == 10) {
+                        number = "+91" + mobile;
+                    } else {
+                        number = mobile;
+                    }
 
 
-                db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", number).get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    if (task.getResult().isEmpty()) {
+                    db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", number).get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        if (task.getResult().isEmpty()) {
 
 
-                                    } else {
-                                        CharSequence s = mobile;
+                                        } else {
+                                            CharSequence s = mobile;
 
-                                        contacts.add(new Contact(name, mobile));
-                                    }
-                                    try {
-                                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        Gson gson = new Gson();
-                                        String json = gson.toJson(contacts);
-                                        editor.putString(CONTACT_LIST, json);
-                                        editor.apply();
-                                    } catch (Exception e) {
+                                            contacts.add(new Contact(name, mobile));
+                                        }
+                                        try {
+                                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            Gson gson = new Gson();
+                                            String json = gson.toJson(contacts);
+                                            editor.putString(CONTACT_LIST, json);
+                                            editor.apply();
+                                        } catch (Exception e) {
+                                        }
                                     }
                                 }
-                            }
-                        });
+                            });
+                }
             }
 
         }

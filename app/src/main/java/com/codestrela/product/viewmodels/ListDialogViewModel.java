@@ -100,13 +100,21 @@ public class ListDialogViewModel {
             }
         }
         Iterator<Contact> i = contacts.iterator();
+        String lastNumber = "";
         while (i.hasNext()) {
             Contact contact = i.next();
-            viewModel = new RowSelectContactViewModel(this);
-            String name = contact.getName();
-            viewModel.contactName.set(name);
-            viewModel.contactNumber.set("" + contact.getNumber());
-            selectViewmodel.add(viewModel);
+            String number = contact.getNumber();
+            if ((number).equals(lastNumber)) {
+                Log.e(TAG, "onContact: " + contact.getNumber() + " " + lastNumber);
+
+            } else {
+                lastNumber = contact.getNumber();
+                viewModel = new RowSelectContactViewModel(this);
+                String name = contact.getName();
+                viewModel.contactName.set(name);
+                viewModel.contactNumber.set("" + contact.getNumber());
+                selectViewmodel.add(viewModel);
+            }
         }
         adapter.addAll(selectViewmodel);
 

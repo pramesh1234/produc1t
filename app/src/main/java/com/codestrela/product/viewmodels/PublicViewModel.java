@@ -41,7 +41,6 @@ public class PublicViewModel {
                                 String name = document.getString("name");
                                 String price = document.getString("price");
                                 String image = document.getString("image");
-                                Toast.makeText(publicFragment.getContext(), "hd " + name, Toast.LENGTH_SHORT).show();
                                 viewModel = new RowGroupCommodityList();
                                 viewModel.commodityName.set(name);
                                 viewModel.commodityPrice.set(price);

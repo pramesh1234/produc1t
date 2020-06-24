@@ -2,11 +2,9 @@ package com.codestrela.product.viewmodels;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -16,14 +14,11 @@ import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.fragments.CreateCommodityFragment;
 import com.codestrela.product.fragments.GroupListDialogFragment;
 import com.codestrela.product.fragments.HomeFragment;
-import com.codestrela.product.util.BindableBoolean;
 import com.codestrela.product.util.BindableString;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -42,11 +37,8 @@ public class CreateCommodityViewModel {
     public BindableString type = new BindableString();
     public FirebaseFirestore db;
     public FirebaseAuth mAuth;
-    public StorageReference storageReference;
-    GroupListDialogViewModel groupListDialogViewModel;
     FragmentManager fm;
     Map<String, Object> commodity;
-    RadioGroup modeRadioGroup;
     GroupListDialogFragment fragment;
     CreateCommodityFragment createCommodityFragment;
 
@@ -67,14 +59,6 @@ public class CreateCommodityViewModel {
         return text;
     }
 
-    public Map<String, Object> getCommodity() {
-        return commodity;
-    }
-
-    public void setCommodity(Map<String, Object> commodity) {
-        this.commodity = commodity;
-    }
-
     public void onSubmit(View view) {
         if (createCommodityFragment.req == 1) {
 
@@ -82,8 +66,6 @@ public class CreateCommodityViewModel {
             final ProgressDialog dialog = ProgressDialog.show(createCommodityFragment.getActivity(), "",
                     "Please wait...", true);
             dialog.show();
-            String userId = mAuth.getUid();
-            Long tsLong = System.currentTimeMillis() / 1000;
             commodity = new HashMap<>();
             commodity.put("name", name.get());
             commodity.put("unit", unit.get());

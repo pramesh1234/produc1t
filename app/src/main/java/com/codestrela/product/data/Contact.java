@@ -1,6 +1,7 @@
 package com.codestrela.product.data;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Contact {
     public ArrayList<String> s = new ArrayList<>();
@@ -30,5 +31,19 @@ public class Contact {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contact)) return false;
+        Contact contact = (Contact) o;
+        return getName().equals(contact.getName()) &&
+                getNumber().equals(contact.getNumber());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getNumber());
     }
 }

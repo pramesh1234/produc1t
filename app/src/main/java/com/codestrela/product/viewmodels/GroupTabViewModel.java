@@ -1,5 +1,6 @@
 package com.codestrela.product.viewmodels;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.View;
@@ -85,6 +86,11 @@ public class GroupTabViewModel {
     }
 
     public void onCreateGroup(View view) {
-        tv.show(fm, "fma");
+        Dialog dialogFrg = tv.getDialog();
+        if (dialogFrg != null && dialogFrg.isShowing()) {
+
+        } else {
+            tv.show(fm, "fma");
+        }
     }
 }

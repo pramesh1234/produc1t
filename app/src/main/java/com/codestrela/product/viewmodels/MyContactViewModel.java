@@ -48,6 +48,7 @@ public class MyContactViewModel {
     }
 
     public void getContacts() {
+        String lastNumber = "";
         Cursor cursor = myContactListFragment.getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 null, null, null, null);
         while (cursor.moveToNext()) {
@@ -55,35 +56,41 @@ public class MyContactViewModel {
             final String mobile = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             // Toast.makeText(getActivity(), "name: " + name, Toast.LENGTH_SHORT).show();
             String number;
-            if (mobile.length() == 10) {
-                number = "+91" + mobile;
+            if (mobile.equals(lastNumber)) {
+
             } else {
-                number = mobile;
-            }
+                lastNumber = mobile;
+                if (mobile.length() == 10) {
+                    number = "+91" + mobile;
+                } else {
+                    number = mobile;
+                }
 
 
-            db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", number).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                RowContactViewModel viewModel = new RowContactViewModel(fragment, myContactListFragment);
-                                if (task.getResult().isEmpty()) {
-                                    viewModel.contactName.set(name);
-                                    viewModel.contactNumber.set(mobile);
-                                    viewModel.visiblity.set(true);
+                db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", number).get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
 
-                                } else {
-                                    CharSequence s = mobile;
-                                    no.append(s);
-                                    viewModel.contactName.set(name);
-                                    viewModel.contactNumber.set(mobile);
-                                    contacts.add(new Contact(name, mobile));
-                                    Log.e(TAG, "getContacts:" + name + "  phone " + mobile);
-                                    viewModel.visiblity.set(false);
-                                    Log.e(TAG, "array list: " + contacts.size());
-                                }
-                                try {
+                                    RowContactViewModel viewModel = new RowContactViewModel(fragment, myContactListFragment);
+
+                                    if (task.getResult().isEmpty()) {
+                                        viewModel.contactName.set(name);
+                                        viewModel.contactNumber.set(mobile);
+                                        viewModel.visiblity.set(true);
+
+                                    } else {
+                                        CharSequence s = mobile;
+                                        no.append(s);
+                                        viewModel.contactName.set(name);
+                                        viewModel.contactNumber.set(mobile);
+                                        contacts.add(new Contact(name, mobile));
+                                        Log.e(TAG, "getContacts:" + name + "  phone " + mobile);
+                                        viewModel.visiblity.set(false);
+                                        Log.e(TAG, "array list: " + contacts.size());
+                                    }
+                                    try {
 
 
                       /*  SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(myContactListFragment.getContext());
@@ -92,13 +99,14 @@ public class MyContactViewModel {
                         String json=gson.toJson(contacts);
                         editor.putString(CONTACT_LIST,json);
                         editor.apply();*/
-                                    contactAdapter.add(viewModel);
-                                } catch (Exception e) {
-                                    Log.e(TAG, "message : " + e.toString());
+                                        contactAdapter.add(viewModel);
+                                    } catch (Exception e) {
+                                        Log.e(TAG, "message : " + e.toString());
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+            }
             Log.e(TAG, "getContacts: " + no);
             contactAdapter = new ContactAdapter(new ArrayList<RowContactViewModel>());
 
