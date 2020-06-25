@@ -65,9 +65,9 @@ public class EmailRegisterViewModel {
                             Toast.makeText(emailRegisterFragment.getActivity(), "Authentication Succeed.", Toast.LENGTH_SHORT).show();
                             String userId = mAuth.getUid();
                             Map<String, Object> saveDetail = new HashMap<>();
-                            saveDetail.put("Phone Number", number.get());
-                            saveDetail.put("Email", email);
-                            saveDetail.put("Name", name.get());
+                            saveDetail.put("phone_number", number.get());
+                            saveDetail.put("email", email);
+                            saveDetail.put("name", name.get());
                             db.collection("db_v1").document("barter_doc").collection("users").document().set(saveDetail);
                             Map<String, Object> userContact = new HashMap<>();
                             userContact.put("userId", userId);
@@ -92,13 +92,13 @@ public class EmailRegisterViewModel {
     public void onRegister(View view) {
 
         Log.e(TAG, "onResponse: " + email.get());
-        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Email", email.get())
+        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("email", email.get())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (task.getResult().isEmpty()) {
-                        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", "+91" + number.get())
+                        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("phone_number", "+91" + number.get())
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override

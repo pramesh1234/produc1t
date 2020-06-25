@@ -52,7 +52,7 @@ public class RowContactViewModel {
         } else {
             contact = contactNumber.get();
         }
-        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", contact).get()
+        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("phone_number", contact).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

@@ -53,16 +53,16 @@ public class PhoneRegisterViewModel {
 
     public void onPhoneRegister(View view) {
 
-        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Email", email.get())
+        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("email", email.get())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (task.getResult().isEmpty()) {
-                                userData.put("Name", name.get());
-                                userData.put("Email", email.get());
-                                userData.put("Phone Number", phoneNumber);
+                                userData.put("name", name.get());
+                                userData.put("email", email.get());
+                                userData.put("phone_number", phoneNumber);
                                 checkUser();
                                 db.collection("db_v1").document("barter_doc").collection("users").document().set(userData);
                                 HomeFragment.addFragment((BaseActivity) phoneRegisterFragment.getActivity());

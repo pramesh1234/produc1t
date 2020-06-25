@@ -32,6 +32,7 @@ public class GroupTabViewModel {
     public GroupListAdapter adapter;
     FirebaseFirestore db;
     GroupTabFragment groupTabFragment;
+
     ArrayList<Contact> contacts;
     FragmentManager fm;
     ListDialogFragment tv;

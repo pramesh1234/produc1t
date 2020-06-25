@@ -108,12 +108,12 @@ public class HomeViewModel {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            String name = documentSnapshot.getString("Name");
-                            String Email = documentSnapshot.getString("Email");
-                            String Number = documentSnapshot.getString("Phone Number");
+                            String name = documentSnapshot.getString("name");
+                            String email = documentSnapshot.getString("email");
+                            String number = documentSnapshot.getString("phone_number");
                             cusName.set(name);
-                            cusEmail.set(Email);
-                            cusNumber.set(Number);
+                            cusEmail.set(email);
+                            cusNumber.set(number);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

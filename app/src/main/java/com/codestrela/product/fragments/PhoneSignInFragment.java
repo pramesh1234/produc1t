@@ -177,7 +177,7 @@ public class PhoneSignInFragment extends Fragment {
 
     public void checkUser(final String email) {
 
-        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Email", email)
+        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("email", email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

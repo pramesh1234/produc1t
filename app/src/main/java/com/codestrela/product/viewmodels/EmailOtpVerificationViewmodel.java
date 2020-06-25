@@ -156,9 +156,9 @@ public class EmailOtpVerificationViewmodel {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(emailOtpVerificationFragment.getActivity(), "Authentication Succeed.", Toast.LENGTH_SHORT).show();
                             Map<String, Object> saveDetail = new HashMap<>();
-                            saveDetail.put("Phone Number", number);
-                            saveDetail.put("Email", email);
-                            saveDetail.put("Name", name);
+                            saveDetail.put("phone_number", number);
+                            saveDetail.put("email", email);
+                            saveDetail.put("name", name);
                             db.collection("db_v1").document("barter_doc").collection("users").document().set(saveDetail);
                             checkUser();
                             HomeFragment.addFragment((BaseActivity) emailOtpVerificationFragment.getActivity());
@@ -178,7 +178,7 @@ public class EmailOtpVerificationViewmodel {
 
     public void checkUser() {
 
-        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", number)
+        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("phone_number", number)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

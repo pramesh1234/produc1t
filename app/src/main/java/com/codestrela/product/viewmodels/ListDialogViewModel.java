@@ -127,7 +127,7 @@ public class ListDialogViewModel {
         for (int i = 0; i < data.size(); i++) {
 
 
-            firebaseFirestore.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", data.get(i)).
+            firebaseFirestore.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("phone_number", data.get(i)).
                     get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override

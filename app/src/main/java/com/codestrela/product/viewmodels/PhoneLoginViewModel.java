@@ -154,7 +154,7 @@ public class PhoneLoginViewModel {
 
   public void checkUser() {
     Log.e(TAG, "+91" + PhoneNumber);
-    db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", PhoneNumber)
+    db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("phone_number", PhoneNumber)
             .get()
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
               @Override

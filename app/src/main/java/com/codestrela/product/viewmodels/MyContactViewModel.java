@@ -26,6 +26,8 @@ import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 public class MyContactViewModel {
     public static final String CONTACT_LIST = "contact_list";
@@ -35,6 +37,7 @@ public class MyContactViewModel {
     MyContactListFragment myContactListFragment;
     FirebaseFirestore db;
     ArrayList<Contact> contacts;
+    HashSet<Contact> contactSet;
     CollectionReference usersCref;
     GroupListMemberDialogFragment fragment;
 
@@ -43,54 +46,55 @@ public class MyContactViewModel {
         fragment = new GroupListMemberDialogFragment();
         db = FirebaseFirestore.getInstance();
         contacts = new ArrayList<>();
+        contactSet = new HashSet<>();
 
 
     }
 
     public void getContacts() {
-        String lastNumber = "";
         Cursor cursor = myContactListFragment.getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 null, null, null, null);
         while (cursor.moveToNext()) {
             final String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             final String mobile = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            // Toast.makeText(getActivity(), "name: " + name, Toast.LENGTH_SHORT).show();
+            contactSet.add(new Contact(name, mobile));
+        }
+        for (Contact set : contactSet) {
+            final String contactNumber = set.getNumber();
+            final String contactName = set.getName();
             String number;
-            if (mobile.equals(lastNumber)) {
 
+            if (contactNumber.length() == 10) {
+                number = "+91" + contactNumber;
             } else {
-                lastNumber = mobile;
-                if (mobile.length() == 10) {
-                    number = "+91" + mobile;
-                } else {
-                    number = mobile;
-                }
+                number = contactNumber;
+            }
 
 
-                db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", number).get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
+            db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("phone_number", number).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
 
-                                    RowContactViewModel viewModel = new RowContactViewModel(fragment, myContactListFragment);
+                                RowContactViewModel viewModel = new RowContactViewModel(fragment, myContactListFragment);
 
-                                    if (task.getResult().isEmpty()) {
-                                        viewModel.contactName.set(name);
-                                        viewModel.contactNumber.set(mobile);
-                                        viewModel.visiblity.set(true);
+                                if (task.getResult().isEmpty()) {
+                                    viewModel.contactName.set(contactName);
+                                    viewModel.contactNumber.set(contactNumber);
+                                    viewModel.visiblity.set(true);
 
-                                    } else {
-                                        CharSequence s = mobile;
-                                        no.append(s);
-                                        viewModel.contactName.set(name);
-                                        viewModel.contactNumber.set(mobile);
-                                        contacts.add(new Contact(name, mobile));
-                                        Log.e(TAG, "getContacts:" + name + "  phone " + mobile);
-                                        viewModel.visiblity.set(false);
-                                        Log.e(TAG, "array list: " + contacts.size());
-                                    }
-                                    try {
+                                } else {
+                                    CharSequence s = contactNumber;
+                                    no.append(s);
+                                    viewModel.contactName.set(contactName);
+                                    viewModel.contactNumber.set(contactNumber);
+                                    contacts.add(new Contact(contactName, contactNumber));
+                                    Log.e(TAG, "getContacts:" + contactName + "  phone " + contactNumber);
+                                    viewModel.visiblity.set(false);
+                                    Log.e(TAG, "array list: " + contacts.size());
+                                }
+                                try {
 
 
                       /*  SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(myContactListFragment.getContext());
@@ -99,14 +103,14 @@ public class MyContactViewModel {
                         String json=gson.toJson(contacts);
                         editor.putString(CONTACT_LIST,json);
                         editor.apply();*/
-                                        contactAdapter.add(viewModel);
-                                    } catch (Exception e) {
-                                        Log.e(TAG, "message : " + e.toString());
-                                    }
+                                    contactAdapter.add(viewModel);
+                                } catch (Exception e) {
+                                    Log.e(TAG, "message : " + e.toString());
                                 }
                             }
-                        });
-            }
+                        }
+                    });
+
             Log.e(TAG, "getContacts: " + no);
             contactAdapter = new ContactAdapter(new ArrayList<RowContactViewModel>());
 

@@ -32,7 +32,7 @@ public class GmailRegisterViewModel {
     public void onSubmit(View view) {
 
 
-        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", "+91" + phoneNo.get())
+        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("phone_number", "+91" + phoneNo.get())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

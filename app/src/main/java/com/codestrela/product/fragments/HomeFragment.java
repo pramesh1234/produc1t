@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
                     }
 
 
-                    db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("Phone Number", number).get()
+                    db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("phone_number", number).get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
