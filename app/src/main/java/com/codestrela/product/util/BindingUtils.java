@@ -279,7 +279,7 @@ public class BindingUtils {
     @BindingAdapter("setImage")
     public static void loadImage(ImageView view, String imageUrl) {
         Glide.with(view.getContext())
-                .load(imageUrl).apply(new RequestOptions().centerCrop())
+                .load(imageUrl).apply(new RequestOptions().circleCrop())
                 .into(view);
     }
 

@@ -3,6 +3,7 @@ package com.codestrela.product.viewmodels;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,7 @@ public class GroupTabViewModel {
         this.groupTabFragment = groupTabFragment;
         fm = groupTabFragment.getActivity().getSupportFragmentManager();
         db = FirebaseFirestore.getInstance();
+        Log.e(TAG, "GroupTabViewModel: " + loadData(groupTabFragment.getContext()));
 
         adapter = new GroupListAdapter(new ArrayList<RowGroupListViewModel>());
         tv = new ListDialogFragment();

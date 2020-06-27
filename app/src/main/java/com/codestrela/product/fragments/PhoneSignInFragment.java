@@ -53,7 +53,7 @@ public class PhoneSignInFragment extends Fragment {
     GoogleSignInClient mGoogleSignInClient;
 
     public static void addFragment(BaseActivity activity) {
-        activity.replaceFragment(new PhoneSignInFragment(), false);
+        activity.replaceFragment(new PhoneSignInFragment(), true);
     }
 
     public static void saveData(Context context, String id) {

@@ -25,8 +25,14 @@ import com.codestrela.product.R;
 import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.databinding.FragmentMyAccountBinding;
 import com.codestrela.product.viewmodels.MyAccountViewModel;
+import com.codestrela.product.viewmodels.RowGroupCommodityList;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -55,7 +61,7 @@ public class MyAccountFragment extends Fragment {
     HashMap<String, Object> profile;
 
     public static void addFragment(BaseActivity activity) {
-        activity.replaceFragment(new MyAccountFragment(), true);
+        activity.replaceFragment(new MyAccountFragment(), false);
     }
 
     public static String loadData(Context context) {
@@ -68,8 +74,10 @@ public class MyAccountFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         vm = new MyAccountViewModel(this);
+
         storageReference = FirebaseStorage.getInstance().getReference();
         profile = new HashMap<>();
+        vm.getProfileDetail();
         db = FirebaseFirestore.getInstance();
     }
 
@@ -146,4 +154,5 @@ public class MyAccountFragment extends Fragment {
 
         }
     }
+
 }

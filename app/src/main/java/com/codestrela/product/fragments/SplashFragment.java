@@ -21,7 +21,7 @@ public class SplashFragment extends BaseFragment {
   SplashViewModel vm;
 
   public static void addFragment(BaseActivity activity) {
-    activity.replaceFragment(new SplashFragment(), false);
+    activity.addFragment(new SplashFragment(), false);
   }
 
   @Override

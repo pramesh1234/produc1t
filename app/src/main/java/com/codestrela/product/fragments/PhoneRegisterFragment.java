@@ -29,7 +29,7 @@ public class PhoneRegisterFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        phoneNumber = getArguments().getString("phoneNo");
+        phoneNumber = "+91" + getArguments().getString("phoneNumber");
         vm = new PhoneRegisterViewModel(this, phoneNumber);
 
 
