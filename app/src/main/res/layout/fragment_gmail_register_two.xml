@@ -13,22 +13,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/etotp"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etOtp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:hint="Enter OTP"
-            android:inputType="number"
-            app:binding="@{vm.verificationCode}" />
+            android:layout_marginRight="20dp"
+            android:hint="Enter Otp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="6"
+                android:inputType="number"
+                app:binding="@{vm.verificationCode}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/gmailRegis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etotp"
+            android:layout_below="@id/etOtp"
             android:layout_centerInParent="true"
             android:layout_marginTop="30dp"
             android:background="@color/colorPrimary"

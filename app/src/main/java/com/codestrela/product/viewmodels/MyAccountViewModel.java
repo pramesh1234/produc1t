@@ -16,6 +16,7 @@ import com.codestrela.product.fragments.MyAccountFragment;
 import com.codestrela.product.fragments.MyCommoditiesFragment;
 import com.codestrela.product.fragments.MyContactListFragment;
 import com.codestrela.product.fragments.PhoneSignInFragment;
+import com.codestrela.product.util.BindableBoolean;
 import com.codestrela.product.util.BindableString;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,6 +31,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MyAccountViewModel {
     FirebaseAuth firebaseAuth;
+    public BindableBoolean loading=new BindableBoolean();
     MyAccountFragment myAccountFragment;
     ListDialogFragment tv;
     private static final String SHARED_PREFS = "sharedPrefs";
@@ -47,6 +49,7 @@ public class MyAccountViewModel {
         fm = myAccountFragment.getActivity().getSupportFragmentManager();
         tv = new ListDialogFragment();
         db = FirebaseFirestore.getInstance();
+        loading.set(true);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(myAccountFragment.getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -100,6 +103,7 @@ public class MyAccountViewModel {
                                 String name = documentSnapshot.getString("name");
                                 String email = documentSnapshot.getString("email");
                                 String imageUrl = documentSnapshot.getString("photo_url");
+                                loading.set(false);
                                 nameStr.set(name);
                                 emailStr.set(email);
                                 if (imageUrl.equals("")) {

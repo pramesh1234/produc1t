@@ -57,7 +57,7 @@ public class HomeFragment extends Fragment {
     FirebaseFirestore db;
 
     public static void addFragment(BaseActivity activity) {
-        activity.replaceFragment(new HomeFragment(), true);
+        activity.replaceFragment(new HomeFragment(), false);
     }
 
     @Override

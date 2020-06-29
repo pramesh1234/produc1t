@@ -41,7 +41,7 @@ public class GmailRegisterTwoFragment extends Fragment {
     String PhoneNumber;
 
     public static void addFragment(BaseActivity activity, Fragment fragment) {
-        activity.replaceFragment(fragment, false);
+        activity.replaceFragment(fragment, true);
     }
 
     @Override

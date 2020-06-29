@@ -11,6 +11,7 @@ import com.codestrela.product.fragments.EmailSignInFragment;
 import com.codestrela.product.fragments.PhoneLoginFragment;
 import com.codestrela.product.fragments.PhoneRegisterFragment;
 import com.codestrela.product.fragments.PhoneSignInFragment;
+import com.codestrela.product.util.BindableBoolean;
 import com.codestrela.product.util.BindableString;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,16 +21,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class PhoneSignInViewModel {
     public BindableString phoneNumber = new BindableString();
+    public BindableBoolean loading=new BindableBoolean();
     PhoneSignInFragment phoneSignInFragment;
     FirebaseFirestore db;
 
     public PhoneSignInViewModel(PhoneSignInFragment phoneSignInFragment) {
         this.phoneSignInFragment = phoneSignInFragment;
+        loading.set(false);
         db = FirebaseFirestore.getInstance();
     }
 
     public void onSubmitClicked(View view) {
+        loading.set(true);
         checkUser();
+
     }
 
     public void onSignInClicked(View view) {

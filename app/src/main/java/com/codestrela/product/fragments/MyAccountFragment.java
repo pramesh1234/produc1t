@@ -61,7 +61,7 @@ public class MyAccountFragment extends Fragment {
     HashMap<String, Object> profile;
 
     public static void addFragment(BaseActivity activity) {
-        activity.replaceFragment(new MyAccountFragment(), false);
+        activity.replaceFragment(new MyAccountFragment(), true);
     }
 
     public static String loadData(Context context) {

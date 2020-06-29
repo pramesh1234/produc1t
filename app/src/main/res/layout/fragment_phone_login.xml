@@ -28,19 +28,29 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:inputType="text"
+                android:maxLength="6"
+                android:inputType="number"
                 app:binding="@{vm.verificationCode}" />
 
         </com.google.android.material.textfield.TextInputLayout>
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_height="30dp"
+            android:layout_width="30dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/etOtp"
+            android:layout_centerInParent="true"
+            app:bindVisibility="@{vm.loading}"
+            />
 
         <Button
             android:id="@+id/login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etOtp"
+            android:layout_below="@+id/progress"
             android:layout_centerInParent="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@color/colorPrimary"
             android:onClick="@{vm::onLogin}"
             android:text="submit"

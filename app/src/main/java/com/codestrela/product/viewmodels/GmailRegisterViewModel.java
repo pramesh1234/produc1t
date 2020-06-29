@@ -42,7 +42,6 @@ public class GmailRegisterViewModel {
                                 Bundle bundle = new Bundle();
                                 bundle.putString("phoneNo", phoneNo.get());
                                 GmailRegisterTwoFragment gmailRegisterTwoFragment = new GmailRegisterTwoFragment();
-                                Toast.makeText(gmailRegisterFragment.getContext(), "Not present", Toast.LENGTH_SHORT).show();
                                 gmailRegisterTwoFragment.setArguments(bundle);
                                 gmailRegisterTwoFragment.addFragment((BaseActivity) gmailRegisterFragment.getActivity(), gmailRegisterTwoFragment);
                             } else {

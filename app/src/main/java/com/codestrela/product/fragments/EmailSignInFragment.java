@@ -22,7 +22,7 @@ public class EmailSignInFragment extends Fragment {
     FragmentEmailSignInBinding binding;
 
     public static void addFragment(BaseActivity activity) {
-        activity.replaceFragment(new EmailSignInFragment(), false);
+        activity.replaceFragment(new EmailSignInFragment(), true);
     }
 
     @Override

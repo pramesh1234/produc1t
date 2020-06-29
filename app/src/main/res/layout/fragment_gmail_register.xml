@@ -13,16 +13,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etPhone"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_centerInParent="true"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:hint="Enter Number"
-            android:inputType="number"
-            app:binding="@{vm.phoneNo}" />
+            android:hint="Enter the number">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="10"
+                app:binding='@{vm.phoneNo}' />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/subBtn"

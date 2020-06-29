@@ -13,12 +13,15 @@ import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.fragments.HomeFragment;
 import com.codestrela.product.fragments.PhoneLoginFragment;
 import com.codestrela.product.fragments.PhoneRegisterFragment;
+import com.codestrela.product.util.BindableBoolean;
 import com.codestrela.product.util.BindableString;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,6 +46,7 @@ public class PhoneLoginViewModel {
   FirebaseDatabase firebaseDatabase;
   private boolean mVerificationInProgress = false;
   private String mVerificationId;
+  public BindableBoolean loading=new BindableBoolean();
   private PhoneAuthProvider.ForceResendingToken mResendToken;
   private String verficationId;
   private FirebaseAuth mAuth;
@@ -58,13 +62,19 @@ public class PhoneLoginViewModel {
     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
       String code = phoneAuthCredential.getSmsCode();
       if (code != null) {
+        Toast.makeText(phoneLoginFragment.getActivity(), "code sent successfully", Toast.LENGTH_SHORT).show();
         verifycode(code);
       }
     }
 
     @Override
     public void onVerificationFailed(@NonNull FirebaseException e) {
-      Toast.makeText(phoneLoginFragment.getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+      loading.set(false);
+      if (e instanceof FirebaseAuthInvalidCredentialsException) {
+        Toast.makeText(phoneLoginFragment.getContext(), "The entered number is invalid", Toast.LENGTH_SHORT).show();
+      } else if (e instanceof FirebaseTooManyRequestsException) {
+        Toast.makeText(phoneLoginFragment.getActivity(), "The SMS quota for the project has been exceeded", Toast.LENGTH_SHORT).show();
+      }
 
     }
   };
@@ -75,6 +85,7 @@ public class PhoneLoginViewModel {
     mAuth = FirebaseAuth.getInstance();
     db = FirebaseFirestore.getInstance();
     startPhoneNumberVerification(PhoneNumber);
+    loading.set(false);
     Log.e(TAG, "PhoneLoginViewModel: " + PhoneNumber);
   }
 
@@ -120,7 +131,6 @@ public class PhoneLoginViewModel {
                   } else {
                     checkUser();
                     HomeFragment.addFragment((BaseActivity) phoneLoginFragment.getActivity());
-                    Toast.makeText(phoneLoginFragment.getActivity(), "second", Toast.LENGTH_SHORT).show();
                   }
                 } else {
                   Toast.makeText(phoneLoginFragment.getActivity(), "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -133,12 +143,12 @@ public class PhoneLoginViewModel {
   public void onLogin(View view) {
     String code = verificationCode.get();
     verifycode(code);
-
+     loading.set(true);
   }
 
   public void onResendClicked(View view) {
     resendVerificationCode(PhoneNumber, mResendToken);
-    Toast.makeText(phoneLoginFragment.getActivity(), "code sent successfully", Toast.LENGTH_SHORT).show();
+    loading.set(true);
   }
 
   private void resendVerificationCode(String phoneNumber,
@@ -163,7 +173,11 @@ public class PhoneLoginViewModel {
                     Toast.makeText(phoneLoginFragment.getContext(), "Not present", Toast.LENGTH_SHORT).show();
                   } else {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                      saveData(phoneLoginFragment.getContext(), document.getId());
+                      try {
+                        saveData(phoneLoginFragment.getContext(), document.getId());
+                      }catch (Exception e){
+                        Log.e(TAG, "onComplete: "+e.toString() );
+                      }
                     }
 
                   }

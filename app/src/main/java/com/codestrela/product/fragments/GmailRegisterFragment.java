@@ -15,6 +15,8 @@ import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.databinding.FragmentGmailRegisterBinding;
 import com.codestrela.product.util.AppUtil;
 import com.codestrela.product.viewmodels.GmailRegisterViewModel;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,11 +28,11 @@ public class GmailRegisterFragment extends Fragment {
 
     GmailRegisterViewModel vm;
     FragmentGmailRegisterBinding binding;
-    EditText etPhone;
+    TextInputLayout etPhone;
     String phoneNo;
 
     public static void addFragment(BaseActivity activity) {
-        activity.replaceFragment(new GmailRegisterFragment(), false);
+        activity.replaceFragment(new GmailRegisterFragment(), true);
     }
 
     @Override
@@ -46,8 +48,8 @@ public class GmailRegisterFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_gmail_register, container, false);
         ((BaseActivity) getActivity()).setToolbarVisibility(true);
         binding.setVm(vm);
-        etPhone = (EditText) binding.getRoot().findViewById(R.id.etPhone);
-        phoneNo = etPhone.getText().toString();
+        etPhone = (TextInputLayout) binding.getRoot().findViewById(R.id.etPhone);
+        phoneNo = etPhone.getEditText().toString();
         Button submitBtn = (Button) binding.getRoot().findViewById(R.id.subBtn);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override

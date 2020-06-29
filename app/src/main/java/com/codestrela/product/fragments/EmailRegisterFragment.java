@@ -24,7 +24,7 @@ public class EmailRegisterFragment extends Fragment {
     FirebaseAuth mAuth;
 
     public static void addFragment(BaseActivity activity) {
-        activity.replaceFragment(new EmailRegisterFragment(), false);
+        activity.replaceFragment(new EmailRegisterFragment(), true);
     }
 
     @Override

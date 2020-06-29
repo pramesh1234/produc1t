@@ -113,8 +113,6 @@ public class GmailRegisterTwoViewModel {
                             } else {
 
                                 HomeFragment.addFragment((BaseActivity) gmailRegisterTwoFragment.getActivity());
-                                Toast.makeText(gmailRegisterTwoFragment.getActivity(), "second", Toast.LENGTH_SHORT).show();
-
                             }
                         } else {
                             Toast.makeText(gmailRegisterTwoFragment.getActivity(), "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

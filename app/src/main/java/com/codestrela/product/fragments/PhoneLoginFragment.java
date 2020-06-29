@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.codestrela.product.R;
 import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.databinding.FragmentPhoneLoginBinding;
+import com.codestrela.product.util.BindableBoolean;
 import com.codestrela.product.viewmodels.PhoneLoginViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthProvider;

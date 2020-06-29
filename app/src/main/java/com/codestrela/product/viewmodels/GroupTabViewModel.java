@@ -77,12 +77,14 @@ public class GroupTabViewModel {
                                 groupList.add(viewModel);
                             }
                         }
+                        try{
                         SharedPreferences sharedPreferences = groupTabFragment.getActivity().getSharedPreferences("shared preference", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         Gson gson = new Gson();
                         String json = gson.toJson(group);
                         editor.putString(GROUP_LIST, json);
-                        editor.apply();
+                        editor.apply();}
+                        catch (Exception e){}
                         adapter.addAll(groupList);
                     }
                 });

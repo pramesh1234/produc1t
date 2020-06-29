@@ -23,7 +23,7 @@ public class PhoneRegisterFragment extends Fragment {
     String phoneNumber;
 
     public static void addFragment(BaseActivity activity, Fragment fragment) {
-        activity.replaceFragment(fragment, false);
+        activity.replaceFragment(fragment, true);
     }
 
     @Override
