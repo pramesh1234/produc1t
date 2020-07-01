@@ -209,7 +209,11 @@ public class PhoneSignInFragment extends Fragment {
 
                             } else {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    saveData(getActivity(), document.getId());
+                                    try {
+                                        saveData(getActivity(), document.getId());
+                                    }catch (Exception e){
+
+                                    }
 
                                 }
 
