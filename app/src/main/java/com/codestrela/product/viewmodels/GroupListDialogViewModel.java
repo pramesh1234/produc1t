@@ -11,9 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.codestrela.product.adapters.GroupSelectAdapter;
+import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.data.Contact;
 import com.codestrela.product.data.Group;
 import com.codestrela.product.fragments.GroupListDialogFragment;
+import com.codestrela.product.fragments.MyCommoditiesFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -89,7 +91,15 @@ public class GroupListDialogViewModel {
         for (int i = 0; i < list.size(); i++) {
             db.collection("db_v1").document("barter_doc").collection("groups").document(list.get(i)).update("commodities", FieldValue.arrayUnion(doc.getId()));
         }
+        CreateCommodityViewModel viewModel=new CreateCommodityViewModel();
+        viewModel.name.set("");
+        viewModel.unit.set("");
+        viewModel.type.set("");
+        viewModel.mode.set("");
+        viewModel.price.set("");
+        viewModel.spection.set("");
         groupListDialogFragment.dismiss();
+        MyCommoditiesFragment.addFragment((BaseActivity) groupListDialogFragment.getActivity());
     }
 
     public void onCancelGroup(View view) {

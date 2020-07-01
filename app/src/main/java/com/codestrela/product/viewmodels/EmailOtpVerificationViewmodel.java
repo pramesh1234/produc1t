@@ -57,7 +57,9 @@ public class EmailOtpVerificationViewmodel {
         public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
             String code = phoneAuthCredential.getSmsCode();
             if (code != null) {
+                Toast.makeText(emailOtpVerificationFragment.getActivity(), "code sent successfully", Toast.LENGTH_SHORT).show();
                 verifycode(code);
+
             }
         }
 
@@ -77,8 +79,7 @@ public class EmailOtpVerificationViewmodel {
         name = bundle.getString("name");
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        Toast.makeText(emailOtpVerificationFragment.getContext(), "" + email, Toast.LENGTH_SHORT).show();
-
+        startPhoneNumberVerification(number);
     }
 
     public static void saveData(Context context, String id) {
@@ -129,7 +130,6 @@ public class EmailOtpVerificationViewmodel {
 
     public void onResendClick(View view) {
         resendVerificationCode(number, mResendToken);
-        Toast.makeText(emailOtpVerificationFragment.getActivity(), "code sent successfully", Toast.LENGTH_SHORT).show();
     }
 
     private void resendVerificationCode(String phoneNumber,
@@ -154,11 +154,11 @@ public class EmailOtpVerificationViewmodel {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(emailOtpVerificationFragment.getActivity(), "Authentication Succeed.", Toast.LENGTH_SHORT).show();
                             Map<String, Object> saveDetail = new HashMap<>();
                             saveDetail.put("phone_number", number);
                             saveDetail.put("email", email);
                             saveDetail.put("name", name);
+                            saveDetail.put("photo_url","");
                             db.collection("db_v1").document("barter_doc").collection("users").document().set(saveDetail);
                             checkUser();
                             HomeFragment.addFragment((BaseActivity) emailOtpVerificationFragment.getActivity());
@@ -185,11 +185,9 @@ public class EmailOtpVerificationViewmodel {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (task.getResult().isEmpty()) {
-                                Toast.makeText(emailOtpVerificationFragment.getContext(), "Not present", Toast.LENGTH_SHORT).show();
                             } else {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     saveData(emailOtpVerificationFragment.getContext(), document.getId());
-                                    Toast.makeText(emailOtpVerificationFragment.getContext(), "Phone number is already present" + document.getId(), Toast.LENGTH_SHORT).show();
 
                                 }
 

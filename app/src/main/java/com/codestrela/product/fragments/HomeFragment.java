@@ -1,10 +1,15 @@
 package com.codestrela.product.fragments;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +37,7 @@ import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.data.Contact;
 import com.codestrela.product.databinding.FragmentHomeBinding;
 import com.codestrela.product.viewmodels.HomeViewModel;
+import com.codestrela.product.viewmodels.PhoneSignInViewModel;
 import com.codestrela.product.viewmodels.RowCommodityViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,6 +51,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +63,7 @@ public class HomeFragment extends Fragment {
     ArrayList<Contact> contacts;
     FirebaseFirestore db;
 
+
     public static void addFragment(BaseActivity activity) {
         activity.replaceFragment(new HomeFragment(), false);
     }
@@ -63,6 +71,13 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(!isConnected(Objects.requireNonNull(getActivity()))){
+            buildDialog(getContext()).show();
+
+        }
+        else {
+            
+        }
         vm = new HomeViewModel(this);
         db = FirebaseFirestore.getInstance();
         contacts = new ArrayList<>();
@@ -147,5 +162,37 @@ public class HomeFragment extends Fragment {
             }
 
         }
+    }
+    public boolean isConnected(Context context) {
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netinfo = cm.getActiveNetworkInfo();
+
+        if (netinfo != null&&netinfo.isConnectedOrConnecting()) {
+            android.net.NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            android.net.NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+            if((mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting())) return true;
+            else return false;
+        } else
+            return false;
+    }
+
+    public AlertDialog.Builder buildDialog(Context c) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(c);
+        builder.setTitle("No Internet Connection");
+        builder.setMessage("You need to have Mobile Data or wifi to access this. Press ok to Exit");
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                getActivity().finish();
+            }
+        });
+
+        return builder;
     }
 }

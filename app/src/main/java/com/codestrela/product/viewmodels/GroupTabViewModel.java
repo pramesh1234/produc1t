@@ -14,6 +14,7 @@ import com.codestrela.product.data.Contact;
 import com.codestrela.product.data.Group;
 import com.codestrela.product.fragments.GroupTabFragment;
 import com.codestrela.product.fragments.ListDialogFragment;
+import com.codestrela.product.util.BindableBoolean;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,6 +40,7 @@ public class GroupTabViewModel {
     ListDialogFragment tv;
     RowGroupListViewModel viewModel;
     ArrayList<Group> group;
+    public BindableBoolean loadingGroups=new BindableBoolean();
     ArrayList<RowGroupListViewModel> groupList;
 
     public GroupTabViewModel(GroupTabFragment groupTabFragment) {
@@ -46,7 +48,7 @@ public class GroupTabViewModel {
         fm = groupTabFragment.getActivity().getSupportFragmentManager();
         db = FirebaseFirestore.getInstance();
         Log.e(TAG, "GroupTabViewModel: " + loadData(groupTabFragment.getContext()));
-
+        loadingGroups.set(true);
         adapter = new GroupListAdapter(new ArrayList<RowGroupListViewModel>());
         tv = new ListDialogFragment();
         groupList();
@@ -86,6 +88,7 @@ public class GroupTabViewModel {
                         editor.apply();}
                         catch (Exception e){}
                         adapter.addAll(groupList);
+                        loadingGroups.set(false);
                     }
                 });
     }
@@ -98,4 +101,5 @@ public class GroupTabViewModel {
             tv.show(fm, "fma");
         }
     }
+
 }

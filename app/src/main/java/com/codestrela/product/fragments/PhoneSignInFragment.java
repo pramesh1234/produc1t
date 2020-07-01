@@ -74,10 +74,14 @@ public class PhoneSignInFragment extends Fragment {
         Log.e(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         if(!isConnected(Objects.requireNonNull(getActivity()))){
-            buildDialog(getContext()).show();        }
+            buildDialog(getContext()).show();
+            vm = new PhoneSignInViewModel(this);
+            vm.phoneNumber.set("");
+        }
         else {
 
             vm = new PhoneSignInViewModel(this);
+            vm.phoneNumber.set("");
         }
     }
 
@@ -205,7 +209,7 @@ public class PhoneSignInFragment extends Fragment {
 
                             } else {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    saveData(getContext(), document.getId());
+                                    saveData(getActivity(), document.getId());
 
                                 }
 
@@ -250,7 +254,7 @@ public class PhoneSignInFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-              //  getActivity().finish();
+                getActivity().finish();
             }
         });
 

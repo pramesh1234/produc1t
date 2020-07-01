@@ -16,13 +16,16 @@ import com.codestrela.product.fragments.GmailRegisterTwoFragment;
 import com.codestrela.product.fragments.HomeFragment;
 import com.codestrela.product.fragments.PhoneRegisterFragment;
 import com.codestrela.product.util.AppUtil;
+import com.codestrela.product.util.BindableBoolean;
 import com.codestrela.product.util.BindableString;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,6 +45,7 @@ public class PhoneRegisterViewModel {
     public BindableString name = new BindableString();
     public BindableString email = new BindableString();
     FirebaseFirestore db;
+    public BindableBoolean loading=new BindableBoolean();
     private static final String TAG = "PhoneRegisterViewModel";
     public BindableString smsCode = new BindableString();
     ProgressDialog progressDialog;
@@ -67,12 +71,19 @@ public class PhoneRegisterViewModel {
             String code = phoneAuthCredential.getSmsCode();
             if (code != null) {
                 smsCode.set(code);
+                Toast.makeText(phoneRegisterFragment.getActivity(), "code sent successfully", Toast.LENGTH_SHORT).show();
+                loading.set(false);
             }
         }
 
         @Override
         public void onVerificationFailed(@NonNull FirebaseException e) {
-            Toast.makeText(phoneRegisterFragment.getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            loading.set(false);
+            if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                Toast.makeText(phoneRegisterFragment.getContext(), "The entered number is invalid", Toast.LENGTH_SHORT).show();
+            } else if (e instanceof FirebaseTooManyRequestsException) {
+                Toast.makeText(phoneRegisterFragment.getActivity(), "The SMS quota for the project has been exceeded", Toast.LENGTH_SHORT).show();
+            }
 
         }
     };
@@ -82,6 +93,7 @@ public class PhoneRegisterViewModel {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         this.phoneNumber = phoneNumber;
+        loading.set(false);
         startPhoneNumberVerification(phoneNumber);
         Log.e(TAG, "PhoneRegisterViewModel: " + phoneNumber);
 
@@ -121,7 +133,7 @@ public class PhoneRegisterViewModel {
 
     private void SignInWithCredentials(PhoneAuthCredential credential) {
         progressDialog = new ProgressDialog(phoneRegisterFragment.getActivity());
-        progressDialog.setTitle("Creating profile..");
+        progressDialog.setMessage("Creating profile..");
         progressDialog.show();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -137,9 +149,12 @@ public class PhoneRegisterViewModel {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     checkUser();
+                                    loading.set(false);
+
                                 }
                             });
                         } else {
+                            loading.set(false);
                             Toast.makeText(phoneRegisterFragment.getActivity(), "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
@@ -149,7 +164,7 @@ public class PhoneRegisterViewModel {
 
     public void onResendClicked(View view) {
         resendVerificationCode(phoneNumber, mResendToken);
-        Toast.makeText(phoneRegisterFragment.getActivity(), "code sent successfully", Toast.LENGTH_SHORT).show();
+        loading.set(true);
     }
 
     private void resendVerificationCode(String phoneNumber,
@@ -176,7 +191,7 @@ public class PhoneRegisterViewModel {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            Log.e(TAG, "onSuccesskkojpoa");
+                            Log.e(TAG, "onSuccess");
                             saveData(phoneRegisterFragment.getContext(), documentId);
                             AppUtil.showToast(phoneRegisterFragment.getActivity(), "Profile Created");
                             progressDialog.dismiss();

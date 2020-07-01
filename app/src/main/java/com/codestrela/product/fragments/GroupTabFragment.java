@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.codestrela.product.viewmodels.GroupTabViewModel;
 public class GroupTabFragment extends Fragment {
     GroupTabViewModel vm;
     FragmentGroupTabBinding binding;
+    private static final String TAG = "GroupTabFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,5 +35,11 @@ public class GroupTabFragment extends Fragment {
         binding.setVm(vm);
         ((BaseActivity) getActivity()).setToolbarVisibility(false);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e(TAG, "onResume: " );
     }
 }

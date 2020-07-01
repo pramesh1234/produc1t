@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="center"
-                android:text="Create Groups"
+                android:text="Create Group"
                 android:textSize="20dp" />
         </androidx.cardview.widget.CardView>
 
@@ -111,7 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="center"
-                android:text="transactions"
+                android:text="Transactions"
                 android:textSize="20dp" />
         </androidx.cardview.widget.CardView>
 
@@ -130,7 +130,7 @@
                 android:layout_height="80dp"
                 android:gravity="center"
                 android:onClick="@{vm::onMyCommodity}"
-                android:text="My Commodities list"
+                android:text="My Commodity list"
                 android:textSize="20dp" />
         </androidx.cardview.widget.CardView>
 

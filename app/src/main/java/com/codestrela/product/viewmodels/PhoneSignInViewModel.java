@@ -51,6 +51,7 @@ public class PhoneSignInViewModel {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (task.getResult().isEmpty()) {
+                                loading.set(false);
                                 PhoneRegisterFragment fragment = new PhoneRegisterFragment();
                                 Bundle bundle = new Bundle();
                                 bundle.putString("phoneNumber", phoneNumber.get());

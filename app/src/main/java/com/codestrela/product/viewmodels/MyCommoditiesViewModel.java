@@ -1,70 +1,83 @@
 package com.codestrela.product.viewmodels;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.codestrela.product.adapters.GroupCommodityListAdapter;
 import com.codestrela.product.adapters.MyCommoditiesAdapter;
 import com.codestrela.product.fragments.MyCommoditiesFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class MyCommoditiesViewModel {
     private static final String TAG = "MyCommoditiesViewModel";
-    public MyCommoditiesAdapter myCommoditiesAdapter;
+    public GroupCommodityListAdapter myCommoditiesAdapter;
     public FirebaseFirestore db;
     MyCommoditiesFragment myCommoditiesFragment;
-    ArrayList<RowCommodityViewModel> viewModels;
-    RowCommodityViewModel viewModel;
+    ArrayList<RowGroupCommodityList> viewModels;
+    RowGroupCommodityList viewModel;
+    private static final String SHARED_PREFS = "sharedPrefs";
+    private static final String KEY = "documentIdKey";
     FirebaseAuth mAuth;
 
     public MyCommoditiesViewModel(MyCommoditiesFragment myCommoditiesFragment) {
         this.myCommoditiesFragment = myCommoditiesFragment;
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        String userId = mAuth.getUid();
         viewModels = new ArrayList<>();
-        myCommoditiesAdapter = new MyCommoditiesAdapter(new ArrayList<RowCommodityViewModel>());
-        db.collection("users").document(userId).collection("commodity_list").addSnapshotListener(
-                new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.e(TAG, "error :" + e.getMessage());
-                        }
-                        for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
-                            if (doc.getType() == DocumentChange.Type.ADDED) {
-                                String name = doc.getDocument().getString("name");
-                                String price = doc.getDocument().getString("price");
-                                String type = doc.getDocument().getString("type");
-                                String qty = doc.getDocument().getString("unit");
-                                String mode = doc.getDocument().getString("mode");
+        Log.e(TAG, "onComplete: joaioda"+loadData(myCommoditiesFragment.getActivity()));
+        myCommoditiesAdapter = new GroupCommodityListAdapter(new ArrayList<RowGroupCommodityList>());
+        db.collection("db_v1").document("barter_doc").collection("commodity_list").whereEqualTo("created_by_doc_id",loadData(myCommoditiesFragment.getActivity())).get()
+    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            if (task.isSuccessful()) {
+                if (task.getResult().isEmpty()) {}
 
-                                viewModel = new RowCommodityViewModel();
-                                viewModel.name.set(name);
-                                viewModel.price.set(price);
-                                viewModel.type.set(type);
-                                viewModel.qty.set(qty);
-                                viewModel.mode.set(mode);
-                                viewModels.add(viewModel);
-                                Log.e(TAG, "name: " + name);
-                            }
-                        }
-                        myCommoditiesAdapter.addAll(viewModels);
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        Log.e(TAG, "onComplete: joaioda");
+                            String name = doc.getString("name");
+                            String price = doc.getString("price");
+                            String image = doc.getString("image");
+
+                            viewModel = new RowGroupCommodityList();
+                            viewModel.commodityName.set(name);
+                            viewModel.commodityPrice.set(price);
+                            viewModel.commodityImage.set(image);
+                            viewModels.add(viewModel);
+                            Log.e(TAG, "name: " + name);
+
                     }
+                    myCommoditiesAdapter.addAll(viewModels);
+
                 }
-        );
+        }
+    });
 
     }
 
     public void fillData(String name, String price) {
 
+    }
+    public static String loadData(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String text = sharedPreferences.getString(KEY, "");
+        return text;
     }
 
 }

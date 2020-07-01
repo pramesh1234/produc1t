@@ -14,6 +14,8 @@ import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.fragments.CreateCommodityFragment;
 import com.codestrela.product.fragments.GroupListDialogFragment;
 import com.codestrela.product.fragments.HomeFragment;
+import com.codestrela.product.fragments.MyCommoditiesFragment;
+import com.codestrela.product.fragments.PublicFragment;
 import com.codestrela.product.util.BindableString;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -81,14 +83,26 @@ public class CreateCommodityViewModel {
                 args.putSerializable("getdata", (Serializable) commodity);
                 fragment.setArguments(args);
                 fragment.show(fm, "fma");
+                name.set("");
+                unit.set("");
+                type.set("");
+                mode.set("");
+                price.set("");
+                spection.set("");
             } else {
                 db.collection("db_v1").document("barter_doc").collection("commodity_list").document().set(commodity).addOnSuccessListener(
                         new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 dialog.dismiss();
+                                name.set("");
+                                unit.set("");
+                                type.set("");
+                                mode.set("");
+                                price.set("");
+                                spection.set("");
                                 Toast.makeText(createCommodityFragment.getActivity(), "Commodity is Created", Toast.LENGTH_SHORT).show();
-                                HomeFragment.addFragment((BaseActivity) createCommodityFragment.getActivity());
+                                MyCommoditiesFragment.addFragment((BaseActivity) createCommodityFragment.getActivity());
                             }
                         }
                 );
@@ -98,5 +112,4 @@ public class CreateCommodityViewModel {
             Toast.makeText(createCommodityFragment.getActivity(), "please upload image", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
