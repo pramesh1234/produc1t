@@ -191,11 +191,13 @@ public class PhoneRegisterViewModel {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            Log.e(TAG, "onSuccess");
-                            saveData(phoneRegisterFragment.getContext(), documentId);
-                            AppUtil.showToast(phoneRegisterFragment.getActivity(), "Profile Created");
-                            progressDialog.dismiss();
-                            HomeFragment.addFragment((BaseActivity) phoneRegisterFragment.getActivity());
+                            try {
+                                Log.e(TAG, "onSuccess");
+                                saveData(phoneRegisterFragment.getContext(), documentId);
+                                AppUtil.showToast(phoneRegisterFragment.getActivity(), "Profile Created");
+                                progressDialog.dismiss();
+                                HomeFragment.addFragment((BaseActivity) phoneRegisterFragment.getActivity());
+                            }catch (Exception e){}
                         } else {
                         }
                     }

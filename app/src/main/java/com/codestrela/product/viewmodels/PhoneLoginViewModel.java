@@ -170,7 +170,6 @@ public class PhoneLoginViewModel {
               public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                   if (task.getResult().isEmpty()) {
-                    Toast.makeText(phoneLoginFragment.getContext(), "Not present", Toast.LENGTH_SHORT).show();
                   } else {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                       try {
