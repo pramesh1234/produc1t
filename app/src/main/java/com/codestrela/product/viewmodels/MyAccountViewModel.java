@@ -3,6 +3,7 @@ package com.codestrela.product.viewmodels;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.codestrela.product.fragments.MyAccountFragment;
 import com.codestrela.product.fragments.MyCommoditiesFragment;
 import com.codestrela.product.fragments.MyContactListFragment;
 import com.codestrela.product.fragments.PhoneSignInFragment;
+import com.codestrela.product.fragments.TransactionFragment;
 import com.codestrela.product.util.BindableBoolean;
 import com.codestrela.product.util.BindableString;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,6 +34,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class MyAccountViewModel {
     FirebaseAuth firebaseAuth;
     public BindableBoolean loading=new BindableBoolean();
+    private static final String TAG = "MyAccountViewModel";
     MyAccountFragment myAccountFragment;
     ListDialogFragment tv;
     private static final String SHARED_PREFS = "sharedPrefs";
@@ -79,6 +82,9 @@ public class MyAccountViewModel {
     public void onCreateGroup(View view) {
         tv.show(fm, "fma");
     }
+    public void onTransaction(View view){
+        TransactionFragment.addFragment((BaseActivity) myAccountFragment.getActivity());
+    }
 
     public void onSignOut(View view) {
         firebaseAuth.signOut();
@@ -103,11 +109,13 @@ public class MyAccountViewModel {
                                 String name = documentSnapshot.getString("name");
                                 String email = documentSnapshot.getString("email");
                                 String imageUrl = documentSnapshot.getString("photo_url");
+                                Log.e(TAG, "onComplete: yy" );
                                 loading.set(false);
                                 nameStr.set(name);
                                 emailStr.set(email);
+                                assert imageUrl != null;
                                 if (imageUrl.equals("")) {
-                                    photoUrlStr.set("https://firebasestorage.googleapis.com/v0/b/project-d7d51.appspot.com/o/profile_images%2Fdefault-profile.png?alt=media&token=f19f9724-71dc-48ac-9f1a-ecf64c703d2b");
+                                    photoUrlStr.set("https://firebasestorage.googleapis.com/v0/b/project-d7d51.appspot.com/o/profile_images%2FUntitle.png?alt=media&token=e600e509-1c1f-42a1-a7c1-be5cce7dcd0e");
                                 } else {
                                     photoUrlStr.set(imageUrl);
                                 }

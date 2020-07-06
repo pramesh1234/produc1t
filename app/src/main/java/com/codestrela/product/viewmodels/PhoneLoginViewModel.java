@@ -1,5 +1,6 @@
 package com.codestrela.product.viewmodels;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -50,6 +52,7 @@ public class PhoneLoginViewModel {
   private PhoneAuthProvider.ForceResendingToken mResendToken;
   private String verficationId;
   private FirebaseAuth mAuth;
+  ProgressDialog dialog;
   private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
     @Override
     public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
@@ -86,6 +89,7 @@ public class PhoneLoginViewModel {
     db = FirebaseFirestore.getInstance();
     startPhoneNumberVerification(PhoneNumber);
     loading.set(false);
+    dialog=new ProgressDialog(phoneLoginFragment.getActivity());
     Log.e(TAG, "PhoneLoginViewModel: " + PhoneNumber);
   }
 
@@ -110,6 +114,8 @@ public class PhoneLoginViewModel {
   }
 
   private void verifycode(String code) {
+    dialog.setMessage("Logging in...");
+    dialog.show();
     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verficationId, code);
     SignInWithCredentials(credential);
   }
@@ -130,7 +136,6 @@ public class PhoneLoginViewModel {
                     fragment.addFragment((BaseActivity) phoneLoginFragment.getActivity(), fragment);
                   } else {
                     checkUser();
-                    HomeFragment.addFragment((BaseActivity) phoneLoginFragment.getActivity());
                   }
                 } else {
                   Toast.makeText(phoneLoginFragment.getActivity(), "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -170,10 +175,14 @@ public class PhoneLoginViewModel {
               public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                   if (task.getResult().isEmpty()) {
+                    Log.e(TAG, "dintan");
                   } else {
+                    Log.e(TAG, "onComplete: dintan");
                     for (QueryDocumentSnapshot document : task.getResult()) {
                       try {
-                        saveData(phoneLoginFragment.getContext(), document.getId());
+                        dialog.dismiss();
+                        saveData(Objects.requireNonNull(phoneLoginFragment.getContext()), document.getId());
+                        HomeFragment.addFragment((BaseActivity) phoneLoginFragment.getActivity());
                       }catch (Exception e){
                         Log.e(TAG, "onComplete: "+e.toString() );
                       }

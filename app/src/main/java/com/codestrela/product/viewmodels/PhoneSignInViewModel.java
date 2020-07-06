@@ -58,6 +58,7 @@ public class PhoneSignInViewModel {
                                 fragment.setArguments(bundle);
                                 fragment.addFragment((BaseActivity) phoneSignInFragment.getActivity(), fragment);
                             } else {
+                                loading.set(false);
                                 PhoneLoginFragment fragment = new PhoneLoginFragment();
                                 Bundle bundle = new Bundle();
                                 bundle.putString("phoneNumber", phoneNumber.get());

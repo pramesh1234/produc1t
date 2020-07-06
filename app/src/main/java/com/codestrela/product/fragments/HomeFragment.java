@@ -61,6 +61,7 @@ public class HomeFragment extends Fragment {
     HomeViewModel vm;
     FragmentHomeBinding binding;
     ArrayList<Contact> contacts;
+    private static final String TAG = "HomeFragment";
     FirebaseFirestore db;
 
 
@@ -78,6 +79,8 @@ public class HomeFragment extends Fragment {
         else {
             
         }
+        ContactThread thread=new ContactThread(20);
+        thread.start();
         vm = new HomeViewModel(this);
         db = FirebaseFirestore.getInstance();
         contacts = new ArrayList<>();
@@ -88,8 +91,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-        myAsyncTasks.execute();
+      //  MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+       // myAsyncTasks.execute();
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         binding.setVm(vm);
         ViewPager viewPager = binding.getRoot().findViewById(R.id.event_view_pager);
@@ -102,6 +105,7 @@ public class HomeFragment extends Fragment {
     class MyAsyncTasks extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
+            Log.e(TAG, "doInBackground: " );
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                     && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -112,57 +116,9 @@ public class HomeFragment extends Fragment {
             return null;
         }
 
-        public void getContacts() {
-
-            Cursor cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    null, null, null, null);
-            while (cursor.moveToNext()) {
-                String lastNumber = "";
-                final String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                final String mobile = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                // Toast.makeText(getActivity(), "name: " + name, Toast.LENGTH_SHORT).show();
-                String number;
-                if (lastNumber.equals(mobile)) {
-
-                } else {
-                    lastNumber = mobile;
-                    if (mobile.length() == 10) {
-                        number = "+91" + mobile;
-                    } else {
-                        number = mobile;
-                    }
-
-
-                    db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("phone_number", number).get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        if (task.getResult().isEmpty()) {
-
-
-                                        } else {
-                                            CharSequence s = mobile;
-
-                                            contacts.add(new Contact(name, mobile));
-                                        }
-                                        try {
-                                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                                            Gson gson = new Gson();
-                                            String json = gson.toJson(contacts);
-                                            editor.putString(CONTACT_LIST, json);
-                                            editor.apply();
-                                        } catch (Exception e) {
-                                        }
-                                    }
-                                }
-                            });
-                }
-            }
 
         }
-    }
+
     public boolean isConnected(Context context) {
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -195,4 +151,80 @@ public class HomeFragment extends Fragment {
 
         return builder;
     }
-}
+    class ContactThread extends Thread{
+        int seconds;
+        public ContactThread(int seconds){
+            this.seconds=seconds;
+        }
+        @Override
+        public void run() {
+            super.run();
+            for(int i=0;i<seconds;i++){
+                Log.e(TAG, "run: " );
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                        && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    getActivity().requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 1);
+                } else {
+                    getContacts();
+                }
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } 
+            }
+        }
+    }
+    public void getContacts() {
+
+        Cursor cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null, null, null, null);
+        while (cursor.moveToNext()) {
+            String lastNumber = "";
+            final String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            final String mobile = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            // Toast.makeText(getActivity(), "name: " + name, Toast.LENGTH_SHORT).show();
+            String number;
+            if (lastNumber.equals(mobile)) {
+
+            } else {
+                lastNumber = mobile;
+                if (mobile.length() == 10) {
+                    number = "+91" + mobile;
+                } else {
+                    number = mobile;
+                }
+
+
+                db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("phone_number", number).get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (task.getResult().isEmpty()) {
+
+
+                                    } else {
+                                        CharSequence s = mobile;
+
+                                        contacts.add(new Contact(name, mobile));
+                                    }
+                                    try {
+                                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        Gson gson = new Gson();
+                                        String json = gson.toJson(contacts);
+                                        editor.putString(CONTACT_LIST, json);
+                                        editor.apply();
+                                    } catch (Exception e) {
+                                    }
+                                }
+                            }
+                        });
+            }
+        }
+    }
+
+    }

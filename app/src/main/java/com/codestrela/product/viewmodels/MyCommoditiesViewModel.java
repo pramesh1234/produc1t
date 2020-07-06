@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import com.codestrela.product.adapters.GroupCommodityListAdapter;
 import com.codestrela.product.adapters.MyCommoditiesAdapter;
 import com.codestrela.product.fragments.MyCommoditiesFragment;
+import com.codestrela.product.util.BindableBoolean;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +32,8 @@ public class MyCommoditiesViewModel {
     MyCommoditiesFragment myCommoditiesFragment;
     ArrayList<RowGroupCommodityList> viewModels;
     RowGroupCommodityList viewModel;
+    public BindableBoolean progress=new BindableBoolean();
+    public BindableBoolean noCommodity=new BindableBoolean();
     private static final String SHARED_PREFS = "sharedPrefs";
     private static final String KEY = "documentIdKey";
     FirebaseAuth mAuth;
@@ -38,6 +41,8 @@ public class MyCommoditiesViewModel {
     public MyCommoditiesViewModel(MyCommoditiesFragment myCommoditiesFragment) {
         this.myCommoditiesFragment = myCommoditiesFragment;
         db = FirebaseFirestore.getInstance();
+        progress.set(true);
+        noCommodity.set(false);
         mAuth = FirebaseAuth.getInstance();
         viewModels = new ArrayList<>();
         Log.e(TAG, "onComplete: joaioda"+loadData(myCommoditiesFragment.getActivity()));
@@ -47,14 +52,17 @@ public class MyCommoditiesViewModel {
         @Override
         public void onComplete(@NonNull Task<QuerySnapshot> task) {
             if (task.isSuccessful()) {
-                if (task.getResult().isEmpty()) {}
+                if (task.getResult().isEmpty()) {
+                    noCommodity.set(true);
+                    progress.set(false);
+                }
 
                     for (QueryDocumentSnapshot doc : task.getResult()) {
                         Log.e(TAG, "onComplete: joaioda");
                             String name = doc.getString("name");
                             String price = doc.getString("price");
                             String image = doc.getString("image");
-
+                             progress.set(false);
                             viewModel = new RowGroupCommodityList();
                             viewModel.commodityName.set(name);
                             viewModel.commodityPrice.set(price);

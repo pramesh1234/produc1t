@@ -44,7 +44,7 @@ public class PhoneLoginFragment extends Fragment {
     private FirebaseAuth mAuth;
 
     public static void addFragment(BaseActivity activity, Fragment fragment) {
-        activity.replaceFragment(fragment, false);
+        activity.replaceFragment(fragment, true);
     }
 
     @Override

@@ -146,14 +146,12 @@ public class PhoneSignInFragment extends Fragment {
                             //        Log.d(TAG, "signInWithCredential:success");
                             boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
                             if (isNew) {
-                                GmailRegisterFragment.addFragment((BaseActivity) getActivity());
                                 GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
                                 if (acct != null) {
                                     String personEmail = acct.getEmail();
-                                    checkUser(personEmail);
+                                    checkUserData(personEmail);
                                 }
                             } else {
-                                HomeFragment.addFragment((BaseActivity) getActivity());
                                 GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
                                 if (acct != null) {
                                     String personEmail = acct.getEmail();
@@ -211,6 +209,36 @@ public class PhoneSignInFragment extends Fragment {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     try {
                                         saveData(getActivity(), document.getId());
+                                        HomeFragment.addFragment((BaseActivity) getActivity());
+                                    }catch (Exception e){
+
+                                    }
+
+                                }
+
+                            }
+
+
+                        }
+                    }
+                });
+    }
+    public void checkUserData(final String email) {
+
+        db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                Log.e(TAG, "onComplete: " + email);
+
+                            } else {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    try {
+                                        saveData(getActivity(), document.getId());
+                                        GmailRegisterFragment.addFragment((BaseActivity) getActivity());
                                     }catch (Exception e){
 
                                     }

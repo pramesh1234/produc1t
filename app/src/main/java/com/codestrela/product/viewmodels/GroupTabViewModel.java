@@ -34,7 +34,7 @@ public class GroupTabViewModel {
     public GroupListAdapter adapter;
     FirebaseFirestore db;
     GroupTabFragment groupTabFragment;
-
+    public BindableBoolean noGroup=new BindableBoolean();
     ArrayList<Contact> contacts;
     FragmentManager fm;
     ListDialogFragment tv;
@@ -47,7 +47,8 @@ public class GroupTabViewModel {
         this.groupTabFragment = groupTabFragment;
         fm = groupTabFragment.getActivity().getSupportFragmentManager();
         db = FirebaseFirestore.getInstance();
-        Log.e(TAG, "GroupTabViewModel: " + loadData(groupTabFragment.getContext()));
+        noGroup.set(false);
+        Log.e(TAG, "GroupTabViewModel: user id" + loadData(groupTabFragment.getContext()));
         loadingGroups.set(true);
         adapter = new GroupListAdapter(new ArrayList<RowGroupListViewModel>());
         tv = new ListDialogFragment();
@@ -67,6 +68,8 @@ public class GroupTabViewModel {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (task.getResult().isEmpty()) {
+                                Log.e(TAG, "onComplete: No result");
+                                noGroup.set(true);
                             }
                             groupList = new ArrayList<>();
                             group = new ArrayList<>();

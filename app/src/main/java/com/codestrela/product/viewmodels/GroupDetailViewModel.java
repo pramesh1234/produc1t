@@ -40,8 +40,8 @@ public class GroupDetailViewModel {
                                     new EventListener<DocumentSnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                                            String name = documentSnapshot.getString("Name");
-                                            String number = documentSnapshot.getString("Phone Number");
+                                            String name = documentSnapshot.getString("name");
+                                            String number = documentSnapshot.getString("phone_number");
                                             Log.e(TAG, "onEvent: " + name + " " + number);
                                             RowGroupDetaill viewmodel = new RowGroupDetaill();
                                             viewmodel.name.set(name);

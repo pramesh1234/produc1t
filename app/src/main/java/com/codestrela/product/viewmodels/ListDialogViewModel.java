@@ -1,9 +1,14 @@
 package com.codestrela.product.viewmodels;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -12,6 +17,7 @@ import androidx.annotation.NonNull;
 
 import com.codestrela.product.adapters.SelectContactAdapter;
 import com.codestrela.product.data.Contact;
+import com.codestrela.product.fragments.HomeFragment;
 import com.codestrela.product.fragments.ListDialogFragment;
 import com.codestrela.product.util.BindableBoolean;
 import com.codestrela.product.util.BindableString;
@@ -46,6 +52,7 @@ public class ListDialogViewModel {
     public BindableBoolean progressShow = new BindableBoolean();
     public BindableBoolean contactShow = new BindableBoolean();
     public ArrayList<String> data = new ArrayList<>();
+    FirebaseFirestore db;
     public SelectContactAdapter adapter;
     ArrayList<String> groupMembersid;
     FirebaseAuth mAuth;
@@ -64,10 +71,11 @@ public class ListDialogViewModel {
         adapter = new SelectContactAdapter(new ArrayList<RowSelectContactViewModel>());
         firebaseFirestore = FirebaseFirestore.getInstance();
         selectViewmodel = new ArrayList<>();
+        db=FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         groupMembersid = new ArrayList<>();
-        progressShow.set(false);
-        contactShow.set(true);
+        progressShow.set(true);
+        contactShow.set(false);
         try {
             onContact();
         } catch (Exception e) {
@@ -117,8 +125,8 @@ public class ListDialogViewModel {
             }
         }
         adapter.addAll(selectViewmodel);
-
-
+        progressShow.set(false);
+        contactShow.set(true);
     }
 
     public void onSubmitContact(View view) {
@@ -174,6 +182,56 @@ public class ListDialogViewModel {
 
     public void onCancelPressed(View view) {
         listDialogFragment.getDialog().dismiss();
+    }
+    public void getContacts() {
+
+        Cursor cursor = listDialogFragment.getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null, null, null, null);
+        while (cursor.moveToNext()) {
+            String lastNumber = "";
+            final String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            final String mobile = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            // Toast.makeText(getActivity(), "name: " + name, Toast.LENGTH_SHORT).show();
+            String number;
+            if (lastNumber.equals(mobile)) {
+
+            } else {
+                lastNumber = mobile;
+                if (mobile.length() == 10) {
+                    number = "+91" + mobile;
+                } else {
+                    number = mobile;
+                }
+
+
+                db.collection("db_v1").document("barter_doc").collection("users").whereEqualTo("phone_number", number).get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (task.getResult().isEmpty()) {
+
+
+                                    } else {
+                                        CharSequence s = mobile;
+
+                                        contacts.add(new Contact(name, mobile));
+                                    }
+                                    try {
+                                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(listDialogFragment.getContext());
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        Gson gson = new Gson();
+                                        String json = gson.toJson(contacts);
+                                        editor.putString(CONTACT_LIST, json);
+                                        editor.apply();
+                                    } catch (Exception e) {
+                                    }
+                                }
+                            }
+                        });
+            }
+
+        }
     }
 
 }
