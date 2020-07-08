@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.codestrela.product.adapters.RequestAdapter;
 import com.codestrela.product.fragments.RequestTabFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -14,22 +15,31 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class RequestTabViewModel {
     private static final String TAG = "RequestTabViewModel";
     private static final String SHARED_PREFS = "sharedPrefs";
     private static final String KEY = "documentIdKey";
+    public RequestAdapter adapter;
+    String requesterName,commodityName,quantity;
+    ArrayList<RowRequestViewModel> arrayList;
     FirebaseFirestore db;
     RequestTabFragment requestTabFragment;
 
     public RequestTabViewModel(RequestTabFragment requestTabFragment) {
         this.requestTabFragment=requestTabFragment;
         db=FirebaseFirestore.getInstance();
+        arrayList=new ArrayList<>();
+        adapter=new RequestAdapter(new ArrayList<RowRequestViewModel>());
         displayRequest();
     }
     public void displayRequest(){
-        db.collection("db_v1").document("barter_doc").collection("requests").whereEqualTo("requestedTo",loadData(requestTabFragment.getActivity())).get()
+        Log.e(TAG, "onComplete: wpwpempty "+loadData(requestTabFragment.getActivity()));
+
+        db.collection("db_v1").document("barter_doc").collection("requests").whereEqualTo("requested_to",loadData(requestTabFragment.getActivity())).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -38,10 +48,18 @@ public class RequestTabViewModel {
                         }
                      if(task.isSuccessful()){
                          for(QueryDocumentSnapshot doc : task.getResult()){
-                             String commodityList=doc.getString("commodityId");
-                             Log.e(TAG, "onComplete: "+commodityList);
+                             RowRequestViewModel viewModel=new RowRequestViewModel();
+                              commodityName=doc.getString("commodity_name");
+                              quantity=doc.getString("quantity");
+                             Log.e(TAG, "onComplete: pty "+commodityName);
+                             viewModel.commodityName.set(commodityName);
+                              viewModel.quantity.set(quantity);
+                              arrayList.add(viewModel);
+
+                             Log.e(TAG, "onComplete: "+commodityName);
                          }
                      }
+                     adapter.addAll(arrayList);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

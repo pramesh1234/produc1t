@@ -78,14 +78,7 @@ public class CreateCommodityFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_commodity, container, false);
         binding.setVm(vm);
         commodityImageView = (ImageView) binding.getRoot().findViewById(R.id.selectBtn);
-        uploadBtn = (Button) binding.getRoot().findViewById(R.id.uploadBtn);
         selectBtn = (ImageView) binding.getRoot().findViewById(R.id.selectBtn);
-        uploadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadImage();
-            }
-        });
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +97,9 @@ public class CreateCommodityFragment extends Fragment {
                         break;
                     case R.id.saleId:
                         vm.mode.set("sale");
+                        break;
+                    case R.id.bothId:
+                        vm.mode.set("rent/sale");
                         break;
                 }
             }
@@ -146,7 +142,7 @@ public class CreateCommodityFragment extends Fragment {
                 selectBtn.setVisibility(View.GONE);
                 commodityImageView.setImageBitmap(bitmap);
                 commodityImageView.setVisibility(View.VISIBLE);
-
+                uploadImage();
                 // commodityImageView.setCropToPadding(true);
 
             } catch (IOException e) {
