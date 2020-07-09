@@ -2,6 +2,7 @@ package com.codestrela.product.viewmodels;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -26,12 +27,15 @@ public class SentRequestDialogViewModel {
  public BindableString name=new BindableString();
  public BindableString specification=new BindableString();
  public BindableString quantity=new BindableString();
+    private static final String TAG = "SentRequestDialogViewMo";
  String commodityName,commodityId,requestedBy,requestedTo;
     SentRequestDialogFragment sentRequestDialogFragment;
     public SentRequestDialogViewModel(SentRequestDialogFragment sentRequestDialogFragment) {
         this.sentRequestDialogFragment=sentRequestDialogFragment;
         args=sentRequestDialogFragment.getArguments();
         db=FirebaseFirestore.getInstance();
+        commodityName=args.getString("data");
+        Log.e(TAG, "SentRequestDialogViewModel: "+commodityName );
         commodityName=args.getString("commodityName");
         commodityId=args.getString("commodityId");
         requestedBy=args.getString("requestedBy");
@@ -52,14 +56,12 @@ public class SentRequestDialogViewModel {
         db.collection("db_v1").document("barter_doc").collection("requests").document().set(request).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                sentRequestDialogFragment.dismiss();
                 dialog.dismiss();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 AppUtil.showToast(sentRequestDialogFragment.getActivity(),"Some error occured");
-                sentRequestDialogFragment.dismiss();
                 dialog.dismiss();
             }
         });

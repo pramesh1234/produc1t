@@ -1,5 +1,8 @@
 package com.codestrela.product.viewmodels;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -28,6 +31,13 @@ public class PhoneSignInViewModel {
     public PhoneSignInViewModel(PhoneSignInFragment phoneSignInFragment) {
         this.phoneSignInFragment = phoneSignInFragment;
         loading.set(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                && phoneSignInFragment.getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            phoneSignInFragment.getActivity().requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 1);
+        } else {
+            //     getContacts();
+        }
         db = FirebaseFirestore.getInstance();
     }
 

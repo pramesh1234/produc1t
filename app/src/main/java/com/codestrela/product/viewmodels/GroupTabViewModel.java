@@ -1,10 +1,13 @@
 package com.codestrela.product.viewmodels;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -45,6 +48,7 @@ public class GroupTabViewModel {
 
     public GroupTabViewModel(GroupTabFragment groupTabFragment) {
         this.groupTabFragment = groupTabFragment;
+
         fm = groupTabFragment.getActivity().getSupportFragmentManager();
         db = FirebaseFirestore.getInstance();
         noGroup.set(false);
@@ -104,5 +108,4 @@ public class GroupTabViewModel {
             tv.show(fm, "fma");
         }
     }
-
 }

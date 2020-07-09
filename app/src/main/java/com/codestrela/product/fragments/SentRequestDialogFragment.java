@@ -14,12 +14,13 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.codestrela.product.R;
+import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.databinding.FragmentSentRequestDialogBinding;
 import com.codestrela.product.viewmodels.SentRequestDialogViewModel;
 
 import java.util.ArrayList;
 
-public class SentRequestDialogFragment extends DialogFragment {
+public class SentRequestDialogFragment extends Fragment {
     FragmentSentRequestDialogBinding binding;
     SentRequestDialogViewModel vm;
     ArrayAdapter<String> adapter;
@@ -52,6 +53,9 @@ public class SentRequestDialogFragment extends DialogFragment {
         modeList=new ArrayList<String>();
        return binding.getRoot();
 
+    }
+    public static void addFragment(BaseActivity activity,Fragment fragment) {
+        activity.replaceFragment(fragment, true);
     }
 
 }

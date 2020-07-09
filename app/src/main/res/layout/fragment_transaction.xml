@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.codestrela.product.viewmodels.SplashViewModel" />
+            type="com.codestrela.product.viewmodels.TransactionViewModel" />
     </data>
     <RelativeLayout
         android:layout_height="match_parent"

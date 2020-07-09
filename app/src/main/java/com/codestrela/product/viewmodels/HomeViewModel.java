@@ -1,9 +1,11 @@
 package com.codestrela.product.viewmodels;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -15,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.codestrela.product.MainActivity;
 import com.codestrela.product.adapters.ContactAdapter;
 import com.codestrela.product.adapters.HomeAdapter;
 import com.codestrela.product.R;
@@ -64,6 +67,7 @@ public class HomeViewModel {
     FirebaseFirestore db;
     DocumentReference documentReference;
     GoogleSignInClient mGoogleSignInClient;
+    ProgressDialog dialog;
     ArrayList<Contact> contacts;
 
     public HomeViewModel(HomeFragment homeFragment) {
@@ -165,5 +169,22 @@ public class HomeViewModel {
         recyclerView.setAdapter(myCommoditiesAdapter);
 
         bottomSheetDialog.show();
+    }
+    public void delay(int seconds) {
+        final int milliseconds = seconds * 1000;
+        homeFragment.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //add your code here
+dialog.dismiss();
+                    }
+                }, milliseconds);
+            }
+        });
+
     }
 }

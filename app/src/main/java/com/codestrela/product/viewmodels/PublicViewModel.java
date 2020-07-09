@@ -1,5 +1,7 @@
 package com.codestrela.product.viewmodels;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,12 +18,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class PublicViewModel {
     public GroupCommodityListAdapter adapter;
     FirebaseFirestore db;
     RowGroupCommodityList viewModel;
     ArrayList<RowGroupCommodityList> arrayList;
     PublicFragment publicFragment;
+    private static final String SHARED_PREFS = "sharedPrefs";
+    private static final String KEY = "documentIdKey";
 
     public PublicViewModel(PublicFragment publicFragment) {
         this.publicFragment = publicFragment;
@@ -31,6 +37,12 @@ public class PublicViewModel {
         getCommodity();
     }
 
+    public static String loadData(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String text = sharedPreferences.getString(KEY, "");
+        return text;
+    }
+
     public void getCommodity() {
         db.collection("db_v1").document("barter_doc").collection("commodity_list").whereEqualTo("type", "public").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -38,10 +50,13 @@ public class PublicViewModel {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                String commodityId=document.getId();
+                                String requestedTo=document.getString("created_by_doc_id");
+                                String requestedBy=loadData(publicFragment.getActivity());
                                 String name = document.getString("name");
                                 String price = document.getString("price");
                                 String image = document.getString("image");
-                                viewModel = new RowGroupCommodityList();
+                                viewModel = new RowGroupCommodityList(commodityId,requestedTo,requestedBy,publicFragment);
                                 viewModel.commodityName.set(name);
                                 viewModel.commodityPrice.set(price);
                                 viewModel.commodityImage.set(image);
