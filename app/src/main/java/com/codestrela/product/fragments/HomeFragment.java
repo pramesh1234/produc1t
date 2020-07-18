@@ -36,10 +36,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.common.reflect.TypeToken;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -51,6 +53,7 @@ public class HomeFragment extends Fragment {
     HomeViewModel vm;
     FragmentHomeBinding binding;
     ArrayList<Contact> contacts;
+    ArrayList<Contact> contactList;
     private static final String TAG = "HomeFragment";
     FirebaseFirestore db;
 
@@ -62,7 +65,22 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity) getActivity()).onSyncContact();
+        contactList = new ArrayList<Contact>();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString(CONTACT_LIST, null);
+        Type type = new TypeToken<ArrayList<Contact>>() {
+        }.getType();
+
+        contactList = gson.fromJson(json, type);
+        if (contactList!=null&&!contactList.isEmpty()) {
+
+        }else{
+            ((MainActivity) getActivity()).onSyncContact();
+        }
+        getActivity().setTitle("Home");
+
 
         if (!isConnected(Objects.requireNonNull(getActivity()))) {
             buildDialog(getContext()).show();
@@ -90,8 +108,6 @@ public class HomeFragment extends Fragment {
         ((BaseActivity) getActivity()).setToolbarVisibility(false);
         return binding.getRoot();
     }
-
-
 
     public boolean isConnected(Context context) {
 

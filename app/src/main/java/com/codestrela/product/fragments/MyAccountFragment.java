@@ -80,6 +80,8 @@ public class MyAccountFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if(!isConnected(Objects.requireNonNull(getActivity()))){
             buildDialog(getContext()).show(); }
+        getActivity().setTitle("Profile");
+
         vm = new MyAccountViewModel(this);
 
         storageReference = FirebaseStorage.getInstance().getReference();

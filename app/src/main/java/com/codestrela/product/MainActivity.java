@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,9 +19,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.data.Contact;
+import com.codestrela.product.fragments.CreateCommodityFragment;
 import com.codestrela.product.fragments.HomeFragment;
 import com.codestrela.product.fragments.PhoneSignInFragment;
 import com.codestrela.product.fragments.SplashFragment;
@@ -37,7 +40,19 @@ public class MainActivity extends BaseActivity {
     public static final String CONTACT_LIST = "contact_list";
     private static final String TAG = "MainActivity";
 ProgressDialog dialog;
+
+    CreateCommodityFragment fragment;
+    private Uri mSearchItem;
+
+    public CreateCommodityFragment getFragment() {
+        return this.fragment;
+    }
 FirebaseFirestore db;
+
+    public void setFragment(CreateCommodityFragment fragment) {
+        this.fragment = fragment;
+    }
+
     ArrayList<Contact> contacts;
 
     @Override
@@ -58,6 +73,15 @@ FirebaseFirestore db;
         }, 3000);
     }
 
+    public Uri getSearchItem(){
+        Log.e(TAG, "getSearchItem: "+this.mSearchItem);
+        return this.mSearchItem;
+    }
+
+    public void setSearchItem(Uri searchItem){
+        Log.e(TAG, "setSearchItem: "+this.mSearchItem );
+        this.mSearchItem = searchItem;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

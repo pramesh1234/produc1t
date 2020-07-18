@@ -12,13 +12,17 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.codestrela.product.MainActivity;
 import com.codestrela.product.R;
 import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.databinding.FragmentCreateCommodityBinding;
@@ -39,10 +44,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,9 +61,14 @@ public class CreateCommodityFragment extends Fragment {
     FragmentCreateCommodityBinding binding;
     Button uploadBtn;
     ImageView selectBtn;
+    public String category;
     Uri filePath;
     ImageView commodityImageView;
+    ArrayAdapter<String> categoryAdapter;
     StorageReference storageReference;
+    ArrayList<String> categoryList = new ArrayList<>();
+    Spinner categorySpinner;
+    CreateCommodityFragment fragment;
 
     public static void addFragment(BaseActivity activity) {
         activity.replaceFragment(new CreateCommodityFragment(), true);
@@ -69,6 +81,7 @@ public class CreateCommodityFragment extends Fragment {
             buildDialog(getContext()).show(); }
         vm = new CreateCommodityViewModel(this);
         storageReference = FirebaseStorage.getInstance().getReference();
+        getActivity().setTitle("Create Commodity");
     }
 
     @Override
@@ -79,13 +92,34 @@ public class CreateCommodityFragment extends Fragment {
         binding.setVm(vm);
         commodityImageView = (ImageView) binding.getRoot().findViewById(R.id.selectBtn);
         selectBtn = (ImageView) binding.getRoot().findViewById(R.id.selectBtn);
+        categoryList.add("Property");
+        categoryList.add("Furniture");
+        fragment=new CreateCommodityFragment();
+        ((MainActivity)getActivity()).setFragment(this);
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onImageSelect();
             }
         });
-        ((BaseActivity) getActivity()).setToolbarVisibility(false);
+        categoryAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categoryList);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        categorySpinner=(Spinner) binding.getRoot().findViewById(R.id.categorySpinner);
+        categorySpinner.setAdapter(categoryAdapter);
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                category = (String) adapterView.getItemAtPosition(i);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        ((BaseActivity) getActivity()).setToolbarVisibility(true);
 
         RadioGroup modeRadioGroup = (RadioGroup) binding.getRoot().findViewById(R.id.rgMode);
         modeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -136,13 +170,18 @@ public class CreateCommodityFragment extends Fragment {
         if (requestCode == 1 && resultCode == RESULT_OK
                 && data != null) {
             req = 1;
+            EditImageFragment fragment=new EditImageFragment();
+            Bundle bundle=new Bundle();
             filePath = data.getData();
+            bundle.putParcelable("uri",filePath);
+            fragment.setArguments(bundle);
+            EditImageFragment.addFragment((BaseActivity)getActivity(),fragment);
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
                 selectBtn.setVisibility(View.GONE);
                 commodityImageView.setImageBitmap(bitmap);
                 commodityImageView.setVisibility(View.VISIBLE);
-                uploadImage();
+              //
                 // commodityImageView.setCropToPadding(true);
 
             } catch (IOException e) {
@@ -220,5 +259,19 @@ public class CreateCommodityFragment extends Fragment {
 
         return builder;
     }
+    public void onBackCall(){
+        filePath = ((MainActivity)getActivity()).getSearchItem();
+        //  selectBtn.setVisibility(View.GONE);
+        Log.e(TAG, "onResume: 11" );
+
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+            commodityImageView.setImageBitmap(bitmap);
+            uploadImage();
+        }catch (Exception e){
+            Log.e(TAG, "onResume: " );
+        }
+    }
+
 }
 

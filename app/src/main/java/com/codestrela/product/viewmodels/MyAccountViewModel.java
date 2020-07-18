@@ -1,7 +1,6 @@
 package com.codestrela.product.viewmodels;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +32,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MyAccountViewModel {
     FirebaseAuth firebaseAuth;
-    public BindableBoolean loading=new BindableBoolean();
+    public BindableBoolean loading = new BindableBoolean();
     private static final String TAG = "MyAccountViewModel";
     MyAccountFragment myAccountFragment;
     ListDialogFragment tv;
@@ -82,7 +81,8 @@ public class MyAccountViewModel {
     public void onCreateGroup(View view) {
         tv.show(fm, "fma");
     }
-    public void onTransaction(View view){
+
+    public void onTransaction(View view) {
         TransactionFragment.addFragment((BaseActivity) myAccountFragment.getActivity());
     }
 
@@ -109,7 +109,7 @@ public class MyAccountViewModel {
                                 String name = documentSnapshot.getString("name");
                                 String email = documentSnapshot.getString("email");
                                 String imageUrl = documentSnapshot.getString("photo_url");
-                                Log.e(TAG, "onComplete: yy" );
+                                Log.e(TAG, "onComplete: yy");
                                 loading.set(false);
                                 nameStr.set(name);
                                 emailStr.set(email);

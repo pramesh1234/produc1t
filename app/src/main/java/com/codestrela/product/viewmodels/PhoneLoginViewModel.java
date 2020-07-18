@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.codestrela.product.base.activity.BaseActivity;
+import com.codestrela.product.fragments.BottomNavigationFragment;
 import com.codestrela.product.fragments.HomeFragment;
 import com.codestrela.product.fragments.PhoneLoginFragment;
 import com.codestrela.product.fragments.PhoneRegisterFragment;
@@ -182,7 +183,7 @@ public class PhoneLoginViewModel {
                       try {
                         dialog.dismiss();
                         saveData(Objects.requireNonNull(phoneLoginFragment.getContext()), document.getId());
-                        HomeFragment.addFragment((BaseActivity) phoneLoginFragment.getActivity());
+                        BottomNavigationFragment.addFragment((BaseActivity) phoneLoginFragment.getActivity());
                       }catch (Exception e){
                         Log.e(TAG, "onComplete: "+e.toString() );
                       }

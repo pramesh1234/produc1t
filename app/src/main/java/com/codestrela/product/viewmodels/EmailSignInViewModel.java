@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.codestrela.product.base.activity.BaseActivity;
+import com.codestrela.product.fragments.BottomNavigationFragment;
 import com.codestrela.product.fragments.EmailRegisterFragment;
 import com.codestrela.product.fragments.EmailSignInFragment;
 import com.codestrela.product.fragments.HomeFragment;
@@ -45,7 +46,7 @@ public class EmailSignInViewModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            HomeFragment.addFragment((BaseActivity) emailSignInFragment.getActivity());
+                            BottomNavigationFragment.addFragment((BaseActivity) emailSignInFragment.getActivity());
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

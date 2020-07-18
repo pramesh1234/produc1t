@@ -75,6 +75,7 @@ public class CreateCommodityViewModel {
             commodity.put("spection", spection.get());
             commodity.put("mode", mode.get());
             commodity.put("type", type.get());
+            commodity.put("category", createCommodityFragment.category);
             commodity.put("image", createCommodityFragment.imageUrl);
             commodity.put("created_by_doc_id", loadData(createCommodityFragment.getContext()));
             commodity.put("created_date", FieldValue.serverTimestamp());

@@ -8,9 +8,16 @@
             name="vm"
             type="com.codestrela.product.viewmodels.RowRequestViewModel" />
     </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="12dp">
     <RelativeLayout
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:onClick="@{vm::onRequestClicked}">
+
         <TextView
             android:id="@+id/commodityName"
             android:layout_height="wrap_content"
@@ -54,4 +61,5 @@
             android:layout_marginTop="10dp"
             />
     </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

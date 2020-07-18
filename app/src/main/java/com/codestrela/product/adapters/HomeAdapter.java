@@ -22,9 +22,9 @@ public class HomeAdapter extends FragmentStatePagerAdapter {
         if (position == 0) {
             fragment = new GroupTabFragment();
         } else if (position == 1) {
-            fragment = new RequestTabFragment();
+            fragment = new GroupTabFragment();
         } else if (position == 2) {
-            fragment = new RequestTabFragment();
+            fragment = new GroupTabFragment();
         }
         return fragment;
     }

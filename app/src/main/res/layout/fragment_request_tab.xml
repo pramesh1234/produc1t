@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,9 +13,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-<androidx.recyclerview.widget.RecyclerView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    setRecyclerViewAdapter="@{vm.adapter}"/>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/event_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textSize="6dp"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            app:tabTextAppearance="@style/MyTabTextAppearance" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/event_view_pager"
+            setAdapter="@{vm.mViewPagerAdapter}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
     </LinearLayout>
 </layout>

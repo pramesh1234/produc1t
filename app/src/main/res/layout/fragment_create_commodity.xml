@@ -20,6 +20,21 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="40dp"
+                android:text="Select Category:"
+                android:textSize="18dp"/>
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="40dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etemail"
@@ -29,7 +44,6 @@
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:layout_marginLeft="40dp"
-                android:layout_marginTop="40dp"
                 android:layout_marginRight="40dp"
                 android:hint="Enter Name / Description">
 
@@ -135,7 +149,7 @@
                     android:id="@+id/bothId"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.3"
                     android:text="Rent/Sale"
                     android:textSize="16dp" />
             </RadioGroup>

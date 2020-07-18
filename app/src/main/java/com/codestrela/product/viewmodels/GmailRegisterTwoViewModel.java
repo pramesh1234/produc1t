@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.codestrela.product.base.activity.BaseActivity;
+import com.codestrela.product.fragments.BottomNavigationFragment;
 import com.codestrela.product.fragments.GmailRegisterTwoFragment;
 import com.codestrela.product.fragments.HomeFragment;
 import com.codestrela.product.util.BindableString;
@@ -108,11 +109,11 @@ public class GmailRegisterTwoViewModel {
                                     Map<String, Object> userContact = new HashMap<>();
                                     userContact.put("userId", userId);
                                     db.collection("user contact").document(PhoneNumber).set(userContact);
-                                    HomeFragment.addFragment((BaseActivity) gmailRegisterTwoFragment.getActivity());
+                                    BottomNavigationFragment.addFragment((BaseActivity) gmailRegisterTwoFragment.getActivity());
                                 }
                             } else {
 
-                                HomeFragment.addFragment((BaseActivity) gmailRegisterTwoFragment.getActivity());
+                                BottomNavigationFragment.addFragment((BaseActivity) gmailRegisterTwoFragment.getActivity());
                             }
                         } else {
                             Toast.makeText(gmailRegisterTwoFragment.getActivity(), "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

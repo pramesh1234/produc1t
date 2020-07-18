@@ -19,8 +19,6 @@ public class RequestViewModel {
     public RequestViewModel(RequestFragment requestFragment) {
         args= new Bundle();
         args=requestFragment.getArguments();
-        String data=args.getString("data");
-
       commodityName=args.getString("commodityName");
         commodityId=args.getString("commodityId");
        requestedBy=args.getString("requestedBy");

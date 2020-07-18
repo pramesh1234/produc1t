@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.codestrela.product.base.activity.BaseActivity;
+import com.codestrela.product.fragments.BottomNavigationFragment;
 import com.codestrela.product.fragments.EmailOtpVerificationFragment;
 import com.codestrela.product.fragments.GmailRegisterTwoFragment;
 import com.codestrela.product.fragments.HomeFragment;
@@ -161,7 +162,7 @@ public class EmailOtpVerificationViewmodel {
                             saveDetail.put("photo_url","");
                             db.collection("db_v1").document("barter_doc").collection("users").document().set(saveDetail);
                             checkUser();
-                            HomeFragment.addFragment((BaseActivity) emailOtpVerificationFragment.getActivity());
+                            BottomNavigationFragment.addFragment((BaseActivity) emailOtpVerificationFragment.getActivity());
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());

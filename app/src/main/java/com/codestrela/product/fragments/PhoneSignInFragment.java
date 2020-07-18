@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import com.codestrela.product.R;
 import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.databinding.FragmentPhoneSignInBinding;
+import com.codestrela.product.databinding.FragmentTransactionBinding;
 import com.codestrela.product.viewmodels.PhoneSignInViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -209,7 +210,7 @@ public class PhoneSignInFragment extends Fragment {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     try {
                                         saveData(getActivity(), document.getId());
-                                        HomeFragment.addFragment((BaseActivity) getActivity());
+                                        BottomNavigationFragment.addFragment((BaseActivity) getActivity());
                                     }catch (Exception e){
 
                                     }
@@ -257,7 +258,7 @@ public class PhoneSignInFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            HomeFragment.addFragment((BaseActivity) getActivity());
+            BottomNavigationFragment.addFragment((BaseActivity) getActivity());
         }
     }
     public boolean isConnected(Context context) {

@@ -60,6 +60,7 @@ public class MyContactListFragment extends Fragment {
             buildDialog(getContext()).show(); }
         setHasOptionsMenu(true);
         vm = new MyContactViewModel(this);
+        getActivity().setTitle("Contact List");
 
     }
 

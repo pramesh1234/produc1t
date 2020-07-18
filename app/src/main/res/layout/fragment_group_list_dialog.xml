@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:layout_weight="1"
+                android:textSize="12sp"
                 android:onClick="@{vm::onSubmitGroup}"
                 android:text="submit" />
 
@@ -43,6 +44,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
+                android:textSize="12sp"
                 android:layout_weight="1"
                 android:onClick="@{vm::onCancelGroup}"
                 android:text="cancel" />

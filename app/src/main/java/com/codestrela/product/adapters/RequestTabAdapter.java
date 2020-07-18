@@ -51,7 +51,7 @@ public class RequestTabAdapter extends FragmentStatePagerAdapter{
         if (position == 0) {
             title = "Specification";
         } else if (position == 1) {
-            title = "User Detail";
+            title = "User Details";
         }
         return title;
     }

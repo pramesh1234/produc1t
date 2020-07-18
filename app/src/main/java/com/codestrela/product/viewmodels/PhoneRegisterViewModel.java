@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.codestrela.product.base.activity.BaseActivity;
+import com.codestrela.product.fragments.BottomNavigationFragment;
 import com.codestrela.product.fragments.GmailRegisterTwoFragment;
 import com.codestrela.product.fragments.HomeFragment;
 import com.codestrela.product.fragments.PhoneRegisterFragment;
@@ -196,7 +197,7 @@ public class PhoneRegisterViewModel {
                                 saveData(phoneRegisterFragment.getContext(), documentId);
                                 AppUtil.showToast(phoneRegisterFragment.getActivity(), "Profile Created");
                                 progressDialog.dismiss();
-                                HomeFragment.addFragment((BaseActivity) phoneRegisterFragment.getActivity());
+                                BottomNavigationFragment.addFragment((BaseActivity) phoneRegisterFragment.getActivity());
                             }catch (Exception e){}
                         } else {
                         }

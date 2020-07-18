@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,16 +8,26 @@
             name="vm"
             type="com.codestrela.product.viewmodels.TransactionViewModel" />
     </data>
-    <RelativeLayout
-        android:layout_height="match_parent"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        >
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="No transactions found"
-            android:textSize="30dp"
-            android:layout_centerInParent="true"
-            />
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/event_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            app:tabTextAppearance="@style/TabTextAppearance" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/event_view_pager"
+            setAdapter="@{vm.transactionTabAdapter}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+    </LinearLayout>
 </layout>
