@@ -43,7 +43,7 @@
             android:id="@+id/requesterName"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="requester"
+            android:text="@{vm.requester}"
             android:textSize="24dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"

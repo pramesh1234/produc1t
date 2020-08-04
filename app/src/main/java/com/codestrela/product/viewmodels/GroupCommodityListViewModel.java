@@ -83,8 +83,9 @@ public class GroupCommodityListViewModel {
                                                 String createdBy=documentSnapshot.getString("created_by_doc_id");
                                                 String name = documentSnapshot.getString("name");
                                                 String price = documentSnapshot.getString("price");
+                                                String quanity=documentSnapshot.getString("unit");
                                                 String image = documentSnapshot.getString("image");
-                                                viewModel = new RowGroupCommodityList(commodityId.get(finalI),createdBy,loadData(groupCommodityListFragment.getContext()),groupCommodityListFragment);
+                                                viewModel = new RowGroupCommodityList(commodityId.get(finalI),createdBy,loadData(groupCommodityListFragment.getContext()),groupCommodityListFragment,quanity);
                                                 viewModel.commodityName.set(name);
                                                 viewModel.commodityPrice.set(price);
                                                 viewModel.commodityImage.set(image);

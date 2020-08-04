@@ -24,8 +24,10 @@ import com.codestrela.product.R;
 import com.codestrela.product.adapters.MyCommoditiesAdapter;
 import com.codestrela.product.base.activity.BaseActivity;
 import com.codestrela.product.data.Contact;
+import com.codestrela.product.fragments.ChatFragment;
 import com.codestrela.product.fragments.HomeFragment;
 import com.codestrela.product.fragments.MyAccountFragment;
+import com.codestrela.product.fragments.NotificationListFragment;
 import com.codestrela.product.fragments.PhoneSignInFragment;
 import com.codestrela.product.fragments.PublicFragment;
 import com.codestrela.product.util.BindableString;
@@ -128,12 +130,15 @@ public class HomeViewModel {
         });
     }
 
-    public void onAccountClicked(View view) {
-        MyAccountFragment.addFragment((BaseActivity) homeFragment.getActivity());
+    public void onChatClicked(View view) {
+        ChatFragment.addFragment((BaseActivity) homeFragment.getActivity());
     }
 
     public void onPublicClicked(View view) {
         PublicFragment.addFragment((BaseActivity) homeFragment.getActivity());
+    }
+    public void onNotificationClicked(View view) {
+        NotificationListFragment.addFragment((BaseActivity) homeFragment.getActivity());
     }
 
     public void onBottomSheet(View view) {

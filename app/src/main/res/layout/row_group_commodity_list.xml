@@ -24,6 +24,7 @@
             <ImageView
                 setImage="@{vm.commodityImage}"
                 android:layout_width="0dp"
+                android:onClick="@{vm::onImageClick}"
                 android:layout_height="100dp"
                 android:layout_weight="0.8"/>
 
@@ -46,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@{vm.commodityPrice}"
+                    android:text="@{vm.commodityPrice.get()+` ₹`}"
                     android:textSize="14dp" />
             </LinearLayout>
             <Button

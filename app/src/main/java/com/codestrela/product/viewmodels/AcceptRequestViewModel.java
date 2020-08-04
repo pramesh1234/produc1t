@@ -12,6 +12,7 @@ import com.codestrela.product.util.BindableBoolean;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -28,7 +29,6 @@ public class AcceptRequestViewModel {
     public BindableBoolean emptyList=new BindableBoolean();
     public RequestAdapter adapter;
     FirebaseFirestore db;
-    String requesterName,commodityName,quantity;
     ArrayList<RowRequestViewModel> arrayList;
 
     AcceptRequestFragment acceptRequestFragment;
@@ -65,19 +65,31 @@ public class AcceptRequestViewModel {
                         if(task.isSuccessful()){
                             loading.set(false);
                             for(QueryDocumentSnapshot doc : task.getResult()){
-                                String requestedBy=doc.getString("requested_by");
-                                String requestedTo=doc.getString("requested_to");
-                                commodityName=doc.getString("commodity_name");
-                                quantity=doc.getString("quantity");
-                                String mode=doc.getString("mode");
-                                String requestId=doc.getId();
-                                String specification=doc.getString("specification");
-                                RowRequestViewModel viewModel=new RowRequestViewModel(acceptRequestFragment,commodityName,quantity,mode,specification,requestId,requestedTo,requestedBy);
-
-                                Log.e(TAG, "onComplete: pty "+commodityName);
-                                viewModel.commodityName.set(commodityName);
-                                viewModel.quantity.set(quantity);
-                                arrayList.add(viewModel);
+                                final String requestedBy=doc.getString("requested_by");
+                                final String requestedTo=doc.getString("requested_to");
+                                final String commodityName=doc.getString("commodity_name");
+                               final String quantity=doc.getString("quantity");
+                                final String mode=doc.getString("mode");
+                                final String requestId=doc.getId();
+                                final String specification=doc.getString("specification");
+                                db.collection("db_v1").document("barter_doc").collection("users").document(requestedBy).get().addOnCompleteListener(
+                                        new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot documentSnapshot = task.getResult();
+                                                    String user = documentSnapshot.getString("name");
+                                                    Log.e(TAG, "onComplete: yy " + user);
+                                                    loading.set(false);
+                                                    RowRequestViewModel viewModel = new RowRequestViewModel(acceptRequestFragment, commodityName, quantity, mode, specification, requestId, requestedTo, requestedBy, requestId);
+                                                    viewModel.commodityName.set(commodityName);
+                                                    viewModel.quantity.set(quantity);
+                                                    viewModel.requester.set(user);
+                                                    adapter.add(viewModel);
+                                                }
+                                            }
+                                        }
+                                );
 
                                 Log.e(TAG, "onComplete: "+commodityName);
                             }

@@ -64,11 +64,15 @@ public class CreateCommodityFragment extends Fragment {
     public String category;
     Uri filePath;
     ImageView commodityImageView;
-    ArrayAdapter<String> categoryAdapter;
+    public String unitItem;
     StorageReference storageReference;
     ArrayList<String> categoryList = new ArrayList<>();
-    Spinner categorySpinner;
+    ArrayAdapter<String> categoryAdapter,unitAdapter;
+    Spinner categorySpinner,unitSpinner;
+    ArrayList<String> unitList = new ArrayList<>();
+
     CreateCommodityFragment fragment;
+
 
     public static void addFragment(BaseActivity activity) {
         activity.replaceFragment(new CreateCommodityFragment(), true);
@@ -90,10 +94,13 @@ public class CreateCommodityFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_commodity, container, false);
         binding.setVm(vm);
+        unitSpinner=(Spinner) binding.getRoot().findViewById(R.id.unitSpinner);
         commodityImageView = (ImageView) binding.getRoot().findViewById(R.id.selectBtn);
         selectBtn = (ImageView) binding.getRoot().findViewById(R.id.selectBtn);
         categoryList.add("Property");
         categoryList.add("Furniture");
+        unitList.add("whole");
+        unitList.add("per pc.");
         fragment=new CreateCommodityFragment();
         ((MainActivity)getActivity()).setFragment(this);
         selectBtn.setOnClickListener(new View.OnClickListener() {
@@ -102,10 +109,23 @@ public class CreateCommodityFragment extends Fragment {
                 onImageSelect();
             }
         });
+
         categoryAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categoryList);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
+        unitAdapter=new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,unitList);
         categorySpinner=(Spinner) binding.getRoot().findViewById(R.id.categorySpinner);
+        unitSpinner.setAdapter(unitAdapter);
+        unitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                unitItem = (String) adapterView.getItemAtPosition(i);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
         categorySpinner.setAdapter(categoryAdapter);
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

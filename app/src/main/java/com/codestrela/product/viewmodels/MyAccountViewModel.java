@@ -15,8 +15,10 @@ import com.codestrela.product.fragments.ListDialogFragment;
 import com.codestrela.product.fragments.MyAccountFragment;
 import com.codestrela.product.fragments.MyCommoditiesFragment;
 import com.codestrela.product.fragments.MyContactListFragment;
+import com.codestrela.product.fragments.MyOrdersFragment;
 import com.codestrela.product.fragments.PhoneSignInFragment;
 import com.codestrela.product.fragments.TransactionFragment;
+import com.codestrela.product.fragments.UserProfileFragment;
 import com.codestrela.product.util.BindableBoolean;
 import com.codestrela.product.util.BindableString;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -60,6 +62,9 @@ public class MyAccountViewModel {
 
     }
 
+    public void onUserProfile(View view) {
+        UserProfileFragment.addFragment((BaseActivity) myAccountFragment.getActivity());
+    }
     public void onCreateCommodity(View view) {
         CreateCommodityFragment.addFragment((BaseActivity) myAccountFragment.getActivity());
     }
@@ -80,6 +85,9 @@ public class MyAccountViewModel {
 
     public void onCreateGroup(View view) {
         tv.show(fm, "fma");
+    }
+    public void onMyOrder(View view){
+        MyOrdersFragment.addFragment((BaseActivity) myAccountFragment.getActivity());
     }
 
     public void onTransaction(View view) {

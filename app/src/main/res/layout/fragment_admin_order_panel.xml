@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.codestrela.product.viewmodels.AdminOrderPanelViewModel" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RadioGroup
+            android:id="@+id/rgStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/rbProcessing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Processing"/>
+            <RadioButton
+                android:id="@+id/rbShipped"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order is shipped"/>
+            <RadioButton
+                android:id="@+id/rbWay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order is on the way"/>
+            <RadioButton
+                android:id="@+id/rbDelivered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order Delivered"/>
+        </RadioGroup>
+    </LinearLayout>
+</layout>

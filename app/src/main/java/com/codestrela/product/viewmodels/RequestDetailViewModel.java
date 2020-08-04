@@ -13,7 +13,7 @@ public class RequestDetailViewModel {
     public RequestReceivedAdapter mViewPagerAdapter;
     RequestDetailFragment requestDetailFragment;
 
-    String mode,specification,commodityName,quantity,requestedTo,requestedBy;
+    String mode,specification,commodityName,quantity,requestedTo,requestedBy,requestRef,request,requester;
     public RequestDetailViewModel(RequestDetailFragment requestDetailFragment) {
         this.requestDetailFragment=requestDetailFragment;
         Bundle bundle = requestDetailFragment.getArguments();
@@ -23,8 +23,12 @@ public class RequestDetailViewModel {
         quantity=bundle.getString("quantity");
         requestedBy=bundle.getString("requestedBy");
         requestedTo=bundle.getString("requestedTo");
+        requestRef=bundle.getString("requestRef");
+        request=bundle.getString("request");
+        requester=bundle.getString("requester");
 
-        mViewPagerAdapter = new RequestReceivedAdapter(requestDetailFragment.getChildFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,mode,quantity,specification,commodityName,requestedTo,requestedBy);
+
+        mViewPagerAdapter = new RequestReceivedAdapter(requestDetailFragment.getChildFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,mode,quantity,specification,commodityName,requestedTo,requestedBy,requestRef,request,requester);
 
     }
 }

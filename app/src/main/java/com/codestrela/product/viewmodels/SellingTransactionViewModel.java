@@ -79,15 +79,11 @@ public class SellingTransactionViewModel {
                                                          user=documentSnapshot.getString("name");
                                                         Log.e(TAG, "onComplete: yy "+user );
                                                         RowTransactionViewModel viewModel = new RowTransactionViewModel(sellingTransactionFragment, quantity, mode,price,"Seller Name");
-
-                                                        Log.e(TAG, "onComplete: pty " + commodityName);
                                                         viewModel.commodityName.set(commodityName);
                                                         viewModel.referenceId.set(referenceId);
                                                         viewModel.requesterName.set(user);
-
                                                         loading.set(false);
                                                         adapter.add(viewModel);
-                                                        Log.e(TAG, "onComplete: " );
                                                     }
                                                 }
                                             }

@@ -55,8 +55,9 @@ public class PublicViewModel {
                                 String requestedBy=loadData(publicFragment.getActivity());
                                 String name = document.getString("name");
                                 String price = document.getString("price");
+                                String quantity=document.getString("unit");
                                 String image = document.getString("image");
-                                viewModel = new RowGroupCommodityList(commodityId,requestedTo,requestedBy,publicFragment);
+                                viewModel = new RowGroupCommodityList(commodityId,requestedTo,requestedBy,publicFragment,quantity);
                                 viewModel.commodityName.set(name);
                                 viewModel.commodityPrice.set(price);
                                 viewModel.commodityImage.set(image);

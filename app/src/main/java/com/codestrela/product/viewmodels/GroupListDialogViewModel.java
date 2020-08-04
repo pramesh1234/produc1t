@@ -47,6 +47,7 @@ public class GroupListDialogViewModel {
     FirebaseAuth mAuth;
     ArrayList<RowSelectGroupViewModel> grouplist;
     Bundle args;
+    String commodityId;
     GroupListDialogFragment groupListDialogFragment;
     Map<String, Object> getData = new HashMap<>();
     CreateCommodityViewModel viewModel = new CreateCommodityViewModel();
@@ -59,6 +60,7 @@ public class GroupListDialogViewModel {
         args = groupListDialogFragment.getArguments();
         list = new ArrayList<>();
         group = new ArrayList<>();
+        commodityId=args.getString("commodityId");
         getData = (Map<String, Object>) args.getSerializable("getdata");
         Log.e(TAG, "eege" + getData.toString());
         adapter = new GroupSelectAdapter(new ArrayList<RowSelectGroupViewModel>());
@@ -86,7 +88,7 @@ public class GroupListDialogViewModel {
     }
 
     public void onSubmitGroup(View view) {
-        DocumentReference doc = db.collection("db_v1").document("barter_doc").collection("commodity_list").document();
+        DocumentReference doc = db.collection("db_v1").document("barter_doc").collection("commodity_list").document(commodityId);
         doc.set(getData);
         for (int i = 0; i < list.size(); i++) {
             db.collection("db_v1").document("barter_doc").collection("groups").document(list.get(i)).update("commodities", FieldValue.arrayUnion(doc.getId()));

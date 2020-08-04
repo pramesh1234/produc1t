@@ -282,5 +282,11 @@ public class BindingUtils {
                 .load(imageUrl).apply(new RequestOptions().circleCrop())
                 .into(view);
     }
+    @BindingAdapter("setSquareImage")
+    public static void loadSquareImage(ImageView view, String imageUrl) {
+        Glide.with(view.getContext())
+                .load(imageUrl).apply(new RequestOptions())
+                .into(view);
+    }
 
 }

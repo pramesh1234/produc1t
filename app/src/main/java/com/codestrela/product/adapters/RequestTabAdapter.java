@@ -14,13 +14,14 @@ import com.codestrela.product.fragments.UserDetailRequestFragment;
 
 public class RequestTabAdapter extends FragmentStatePagerAdapter{
     String title;
-    String commodityName,commodityId,requestedTo,requestedBy;
-    public RequestTabAdapter(@NonNull FragmentManager fm, int behavior,String commodityName,String commodityId,String requestedBy,String requestedTo){
+    String commodityName,commodityId,requestedTo,requestedBy,quantity;
+    public RequestTabAdapter(@NonNull FragmentManager fm, int behavior,String commodityName,String commodityId,String requestedBy,String requestedTo,String quantity){
         super(fm, behavior);
         this.commodityName=commodityName;
         this.commodityId=commodityId;
         this.requestedBy=requestedBy;
         this.requestedTo=requestedTo;
+        this.quantity=quantity;
     }
 
     @NonNull
@@ -34,6 +35,7 @@ public class RequestTabAdapter extends FragmentStatePagerAdapter{
             bundle.putString("commodityId",commodityId);
             bundle.putString("requestedTo",requestedTo);
             bundle.putString("requestedBy",requestedBy);
+            bundle.putString("quantity",quantity);
             fragment.setArguments(bundle);
         } else if (position == 1) {
             fragment = new UserDetailRequestFragment();

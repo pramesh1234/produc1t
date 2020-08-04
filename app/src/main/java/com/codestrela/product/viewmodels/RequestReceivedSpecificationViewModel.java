@@ -10,6 +10,7 @@ import com.codestrela.product.fragments.RequestReceivedSpecificationFragment;
 import com.codestrela.product.fragments.SellingTransactionFragment;
 import com.codestrela.product.util.BindableString;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class RequestReceivedSpecificationViewModel {
     public BindableString quantityBindable = new BindableString();
     public BindableString commodityNameBindable = new BindableString();
     public BindableString specificationBindable = new BindableString();
-    String commodityName, mode, specification, quantity,requestedTo,requestedBy;
+    String commodityName, mode, specification, quantity,requestedTo,requestedBy,requestRef;
     FirebaseFirestore db;
     ProgressDialog dialog;
 
@@ -36,6 +37,7 @@ public class RequestReceivedSpecificationViewModel {
         dialog=new ProgressDialog(requestReceivedSpecificationFragment.getContext());
         requestedTo=bundle.getString("requestedTo");
         specification = bundle.getString("specification");
+        requestRef=bundle.getString("requestRef");
         quantity = bundle.getString("quantity");
         modeBindable.set(mode);
         quantityBindable.set(quantity);
@@ -57,10 +59,14 @@ public class RequestReceivedSpecificationViewModel {
         transaction.put("requested_to",requestedTo);
         transaction.put("specification",specification);
         transaction.put("reference_id","#001TRI"+randomNumber);
+        transaction.put("order_status","Processing");
+        transaction.put("order_date", FieldValue.serverTimestamp());
+
         db.collection("db_v1").document("barter_doc").collection("accepted_request").document().set(transaction).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 dialog.dismiss();
+                db.collection("db_v1").document("barter_doc").collection("requests").document(requestRef).delete();
                 SellingTransactionFragment.addFragment((BaseActivity) requestReceivedSpecificationFragment.getActivity());
             }
         });

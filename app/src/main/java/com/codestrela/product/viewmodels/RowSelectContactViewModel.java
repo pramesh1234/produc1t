@@ -21,7 +21,7 @@ public class RowSelectContactViewModel {
             if (buttonView.isChecked()) {
                 stringdata = buttonView.getText().toString();
                 viewModel.data.add(stringdata);
-                Log.e(TAG, "clicked " + vm.data.size());
+                Log.e(TAG, "clicked "+"    "+stringdata+"  "+ vm.data.size());
                 buttonView.getText();
             }
 

@@ -58,14 +58,31 @@
                 app:bindVisibility="@{vm.loading}"
                 />
 </RelativeLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userRelativeLayout"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="4dp"
+            android:onClick="@{vm::onUserProfile}"
+            app:cardCornerRadius="12dp">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:text="User Profile"
+                android:textSize="20dp" />
+        </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/createCommodity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="8dp"
-            android:layout_below="@id/userRelativeLayout"
+            android:layout_below="@id/profile"
             android:layout_marginRight="4dp"
             android:onClick="@{vm::onCreateCommodity}"
             app:cardCornerRadius="12dp">
@@ -115,13 +132,30 @@
                 android:text="Transactions"
                 android:textSize="20dp" />
         </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/myOrdersList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transactions"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="4dp"
+            app:cardCornerRadius="12dp">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:onClick="@{vm::onMyOrder}"
+                android:text="My Order list"
+                android:textSize="20dp" />
+        </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/myCommodityList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
-            android:layout_below="@id/transactions"
+            android:layout_below="@id/myOrdersList"
             android:layout_marginTop="8dp"
             android:layout_marginRight="4dp"
             app:cardCornerRadius="12dp">
@@ -160,6 +194,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginRight="4dp"
             android:layout_below="@id/myContactList"
             app:cardCornerRadius="12dp">

@@ -14,7 +14,7 @@ public class RequestViewModel {
     public RequestTabAdapter mViewPagerAdapter;
     String data="data";
     Bundle args;
-    String commodityName,commodityId,requestedBy,requestedTo;
+    String commodityName,commodityId,requestedBy,requestedTo,quantity;
     RequestFragment requestFragment;
     public RequestViewModel(RequestFragment requestFragment) {
         args= new Bundle();
@@ -23,9 +23,10 @@ public class RequestViewModel {
         commodityId=args.getString("commodityId");
        requestedBy=args.getString("requestedBy");
         requestedTo=args.getString("requestedTo");
+        quantity=args.getString("quantity");
         //name.set(commodityName);
         this.requestFragment=requestFragment;
-        mViewPagerAdapter = new RequestTabAdapter(requestFragment.getChildFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,commodityName,commodityId,requestedBy,requestedTo);
+        mViewPagerAdapter = new RequestTabAdapter(requestFragment.getChildFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,commodityName,commodityId,requestedBy,requestedTo,quantity);
 
     }
 }

@@ -5,8 +5,6 @@ import android.widget.CompoundButton;
 
 import com.codestrela.product.util.BindableBoolean;
 import com.codestrela.product.util.BindableString;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class RowSelectGroupViewModel {
     private static final String TAG = "RowSelectGroupViewModel";

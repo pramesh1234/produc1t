@@ -58,6 +58,9 @@ BottomNavigationViewModel vm;
             case R.id.navigation_dashboard:
                 fragment = new RequestTabFragment();
                 break;
+            case R.id.navigation_notifications:
+                fragment = new AdminOrderListFragment();
+                break;
 
 
         }

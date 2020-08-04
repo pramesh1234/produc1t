@@ -24,6 +24,14 @@
                 android:layout_marginTop="20dp"
                 android:textSize="24dp"
                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@{`commodity available `+vm.unit.get()}"
+                android:textSize="24dp"
+                />
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

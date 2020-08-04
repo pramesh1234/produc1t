@@ -27,8 +27,9 @@ public class SentRequestDialogViewModel {
  public BindableString name=new BindableString();
  public BindableString specification=new BindableString();
  public BindableString quantity=new BindableString();
+ public BindableString unit=new BindableString();
     private static final String TAG = "SentRequestDialogViewMo";
- String commodityName,commodityId,requestedBy,requestedTo;
+ String commodityName,commodityId,requestedBy,requestedTo,commodityUnit;
     SentRequestDialogFragment sentRequestDialogFragment;
     public SentRequestDialogViewModel(SentRequestDialogFragment sentRequestDialogFragment) {
         this.sentRequestDialogFragment=sentRequestDialogFragment;
@@ -40,12 +41,14 @@ public class SentRequestDialogViewModel {
         commodityId=args.getString("commodityId");
         requestedBy=args.getString("requestedBy");
         requestedTo=args.getString("requestedTo");
+        commodityUnit=args.getString("quantity");
+        unit.set(commodityUnit);
         name.set(commodityName);
     }
     public void onSendRequest(View view){
          dialog=new ProgressDialog(sentRequestDialogFragment.getActivity());
         dialog.setMessage("Sending Request...");
-        dialog.show();
+
         request.put("requested_by",requestedBy);
         request.put("requested_to",requestedTo);
         request.put("commodity_id",commodityId);
@@ -53,18 +56,26 @@ public class SentRequestDialogViewModel {
         request.put("mode",mode.get());
         request.put("specification",specification.get());
         request.put("quantity",quantity.get());
-        db.collection("db_v1").document("barter_doc").collection("requests").document().set(request).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                dialog.dismiss();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                AppUtil.showToast(sentRequestDialogFragment.getActivity(),"Some error occured");
-                dialog.dismiss();
-            }
-        });
+        int sellerQuant=Integer.parseInt(quantity.get());
+        int buyerQuant=Integer.parseInt(commodityUnit);
+        if(buyerQuant>sellerQuant){
+            dialog.show();
+            db.collection("db_v1").document("barter_doc").collection("requests").document().set(request).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    dialog.dismiss();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    AppUtil.showToast(sentRequestDialogFragment.getActivity(),"Some error occured");
+                    dialog.dismiss();
+                }
+            });
+        }else{
+            AppUtil.showToast(sentRequestDialogFragment.getActivity(),"entered unit is invalid");
+        }
+
 
     }
 
